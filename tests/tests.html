@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Mocha Tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+    <script src="../core/models/restaurantModel.js"></script>
+    <script src="../core/models/ratingsModel.js"></script>
+
+</head>
+<body>
+<div id="mocha"></div>
+
+<script src="https://unpkg.com/chai@4/chai.js"></script>
+<script src="https://unpkg.com/mocha/mocha.js"></script>
+
+<script class="mocha-init">
+    mocha.setup("bdd");
+    const expect = chai.expect;
+    describe("Restaurant Rating System", function() {
+        it("starts with zero ratings", function() {
+            let restaurant1 = new RestaurantModel("Anish's Cat Cafe", "101 North Dupont Road");
+            expect(restaurant1.reviews.length).to.equal(0);
+        })
+        it("average of no reviews is No Reviews Found", function() {
+            let restaurant1 = new RestaurantModel("Anish's Cat Cafe", "101 North Dupont Road");
+            expect(restaurant1.calculateAverageReviewRating()).to.equal("No Review Found");
+        })
+        it("average of no reviews is No Reviews Found", function() {
+            let restaurant1 = new RestaurantModel("Anish's Cat Cafe", "101 North Dupont Road");
+            let review1 = new RatingModel(4, "Matt", "Today", "hello world");
+            restaurant1.addReview(review1);
+            expect(restaurant1.calculateAverageReviewRating()).to.equal(4);
+        })
+    })
+</script>
+<script src="test.array.js"></script>
+<script src="test.object.js"></script>
+<script src="test.xhr.js"></script>
+<script class="mocha-exec">
+    mocha.run();
+</script>
+</body>
+</html>
