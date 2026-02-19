@@ -3,24 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="./core/models/ratingsModel.js"></script>
-    <script src="./core/models/restaurantModel.js"></script>
 </head>
 <body>
-    <script>
-
-        let r1 = new RatingModel(4, "matt","Today", "hello world")
-        let r2 = new RatingModel(5, "matt2","Today", "hello world")
-
-        let restaurant = new RestaurantModel("Matt's Food", "100 North Dupont Road");
-        restaurant.addReview(r1);
-        restaurant.addReview(r2);
-        console.log(restaurant.calculateAverageReviewRating())
-        console.log(new RatingModel(4, "matt","Today", "hello world"));
-
-        console.log(new RatingModel(-1, "matt","Today", "hello world"));
-
-
-    </script>
 </body>
 </html>
