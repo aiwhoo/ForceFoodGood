@@ -30,6 +30,18 @@ class CartModel {
     const newItem = new CartItemModel(itemId, name, price, quantity);
     this.items.push(newItem);
 }
+    // Function to remove an item completely from the cart
+    removeItem(itemId) {
+        for (let i = 0; i < this.items.length; i++) {
+            if (this.items[i].itemId === itemId) {
+                // splice removes the item at index i from the items array
+                this.items.splice(i, 1); 
+                return;
+            }
+        }
+        // If we didn’t find the item
+        throw new Error("Item not found in cart");
+    }
 }
 
 module.exports = CartModel;
