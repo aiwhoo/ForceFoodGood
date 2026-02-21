@@ -1,3 +1,20 @@
+/**
+ * CartModel API
+ * -----------------
+ * Class to manage a shopping cart for a single restaurant.
+ *
+ * Constructor:
+ *   CartModel(restaurantId = null)
+ *
+ * Methods:
+ *   addItem(itemId, name, price, quantity = 1)
+ *   removeItem(itemId)
+ *
+ * Example:
+ *   const cart = new CartModel();
+ *   cart.addItem(1, "Burger", 5.99, 2);
+ */
+
 class CartItemModel {
     constructor(itemId, name, price, quantity = 1) {
         if (quantity <= 0) {
