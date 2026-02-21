@@ -16,6 +16,20 @@ class CartModel {
         this.restaurantId = restaurantId;
         this.items = [];
     }
+    // Function to add item(s) to cart
+    addItem(itemId, name, price, quantity = 1) {
+    // Check if item already exists in the cart
+    for (let i = 0; i < this.items.length; i++) {
+        if (this.items[i].itemId === itemId) {
+            this.items[i].quantity += quantity;
+            return;
+        }
+    }
+
+    // Create new item in cart(classItemModel will validate quantity)
+    const newItem = new CartItemModel(itemId, name, price, quantity);
+    this.items.push(newItem);
+}
 }
 
 module.exports = CartModel;
