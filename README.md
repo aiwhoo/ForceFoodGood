@@ -15,4 +15,4 @@ The test results will display on the page.
 - `RestaurantModel` – Stores restaurant name, address, and reviews.
 - `RatingModel` – Stores review data including stars, username, date, and an optional review.
 - `MenuItemModel` (if implemented) – Represents a menu item with name, price, description, and category.
-- 'UserModel' (if implemented) - Represents a user with ID, name, and email.
+- `UserModel` (if implemented) - Represents a user with ID, name, and email.
