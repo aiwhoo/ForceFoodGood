@@ -8,4 +8,8 @@ class RatingModel {
         this.date = date;
         this.review = review;
     }
+
+    getUsername() {
+        return this.username
+    }
 }
