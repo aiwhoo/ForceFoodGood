@@ -3,6 +3,7 @@ class RestaurantModel {
         this.name = name;
         this.address = address;
         this.reviews = [];
+        this.menu = [];
     }
     getName() {
         return this.name;
@@ -29,5 +30,11 @@ class RestaurantModel {
     addReview(review){
         this.reviews.push(review);
     }
-
+    removeMenuItem(menuItem) {
+        this.menu = this.menu.filter((item) => {
+            // should filter out the removed menuItem
+            // will not error if removed menuItem is not in the menu
+            return item !== menuItem;
+        })
+    }
 }
