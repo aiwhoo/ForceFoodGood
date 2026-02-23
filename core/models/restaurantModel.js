@@ -3,6 +3,7 @@ class RestaurantModel {
         this.name = name;
         this.address = address;
         this.reviews = [];
+        this.menu = []; // store menu items
     }
     getName() {
         return this.name;
@@ -29,5 +30,8 @@ class RestaurantModel {
     addReview(review){
         this.reviews.push(review);
     }
-
+    //Andy's work, addMenuItem method
+    addMenuItem(menuItem){
+        this.menu.push(menuItem);
+    }
 }
