@@ -1,5 +1,5 @@
 class Menu {
-    constructor(restaurant = "NO RESTAURANT", cuisine = "NONE") {
+    constructor(restaurant = "NO RESTAURANT") {
         this.items = [];
         this.restaurant = restaurant
     }
