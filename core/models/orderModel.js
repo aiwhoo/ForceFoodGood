@@ -20,6 +20,7 @@ class OrderModel {
 
     // calculates the cost of the order after adding item to cart
     updateCost() {
+        this.totalCost = 0;
         for (let i = 0; i < this.itemsOrdered.length; i++) {
             this.totalCost += this.itemsOrdered[i].price;
         }
