@@ -1,12 +1,10 @@
 class OrderModel {
     /*
-    Constructor takes in:
-    a username,
-    user address,
-    the restaurant (as a restaurant object),
-    an ID number.
-    If these params aren't stated, then they will default to a string
-     */
+    username: string
+    address: string
+    restaurant: RestaurantModel
+    id: string
+    */
     constructor(username = "NO USERNAME",
                 address = "NO ADDRESS",
                 restaurant = "NO RESTAURANT",
@@ -20,7 +18,7 @@ class OrderModel {
         this.id = id
     }
 
-    // iterates through the list itemsOrdered to find the sum of the total cost
+    // calculates the cost of the order after adding item to cart
     updateCost() {
         this.totalCost = 0;
         for (let i = 0; i < this.itemsOrdered.length; i++) {
@@ -28,39 +26,45 @@ class OrderModel {
         }
     }
 
-    // returns the length of itemsOrdered
+    // returns number of items in cart
     getTotalItems() {
         return this.totalItems = this.itemsOrdered.length;
     }
 
-    // returns username
+    // returns username of customer
     getUserName() {
         return this.username;
     }
 
-    // returns userAddress
+    // returns delivery address
     getUserAddress() {
         return this.address;
     }
 
-    // returns restaurant
+     // returns restaurant being ordered from
     getRestaurant() {
         return this.restaurant;
     }
 
-    // returns id
+    // returns unique string ID of the order
     getId() {
         return this.id;
     }
 
-    // adds a specified menuItem
-    addMenuItem(aMenuItem) {
-        this.itemsOrdered.push(aMenuItem);
+    // returns cost of the order
+    getCost() {
+        return this.totalCost;
     }
 
-    // removes a specified menuItem
+    // adds an item to the cart
+    addMenuItem(aMenuItem) {
+        this.itemsOrdered.push(aMenuItem);
+        this.updateCost();
+    }
+    // removes an item from the cart
     removeMenuItem(aMenuItem) {
         this.itemsOrdered.splice(this.itemsOrdered.indexOf(aMenuItem), 1);
+        this.updateCost();
     }
 
 }
