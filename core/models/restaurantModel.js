@@ -3,6 +3,7 @@ class RestaurantModel {
         this.name = name;
         this.address = address;
         this.reviews = [];
+        this.menu = []; // store menu items
     }
     getName() {
         return this.name;
@@ -28,6 +29,22 @@ class RestaurantModel {
     }
     addReview(review){
         this.reviews.push(review);
+    }
+    //Andy's work, addMenuItem method
+    addMenuItem(menuItem){
+        this.menu.push(menuItem);
+
+    // Edit an existing review
+    editReview(index, updatedReview) {
+        if (index < 0 || index >= this.reviews.length) {
+            throw new Error("Invalid review index");
+        }
+
+        if (!(updatedReview instanceof RatingModel)) {
+            throw new Error("Updated Review must be a RatingModel instance");
+        }
+
+        this.reviews[index] = updatedReview;
     }
 
 }
