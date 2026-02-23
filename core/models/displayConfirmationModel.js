@@ -4,7 +4,7 @@ function checkout() {
     if (messageDiv) {
         messageDiv.innerHTML = `
       <div class="alert alert-success">
-        ✅ Your order has been placed successfully!
+        ✅ Your order has been placed successfully.
       </div>
     `;
     } else {
