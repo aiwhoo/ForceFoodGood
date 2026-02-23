@@ -3,6 +3,7 @@ class RestaurantModel {
         this.name = name;
         this.address = address;
         this.reviews = [];
+        this.menu = []; // store menu items
     }
 
     // Getters
@@ -41,6 +42,11 @@ class RestaurantModel {
     addReview(review) {
         this.reviews.push(review);
     }
+<<<<<<< user-flow-diagram
+    //Andy's work, addMenuItem method
+    addMenuItem(menuItem){
+        this.menu.push(menuItem);
+=======
 
     // Edit an existing review
     editReview(index, updatedReview) {
@@ -53,5 +59,6 @@ class RestaurantModel {
         }
 
         this.reviews[index] = updatedReview;
+>>>>>>> main
     }
 }
