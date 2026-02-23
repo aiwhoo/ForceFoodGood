@@ -1,4 +1,4 @@
-function checkout() {
+function displayOrderConfirmation() {
     const messageDiv = document.getElementById("confirmationMessage");
 
     if (messageDiv) {
