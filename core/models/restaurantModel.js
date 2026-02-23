@@ -49,7 +49,7 @@ class RestaurantModel {
         }
 
         if (!(updatedReview instanceof RatingModel)) {
-            throw new Error("Updated Review must be a RatingModel instance");
+            throw new Error("Updated review must be a RatingModel instance");
         }
 
         this.reviews[index] = updatedReview;
