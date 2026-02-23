@@ -5,48 +5,34 @@ class RestaurantModel {
         this.reviews = [];
         this.menu = []; // store menu items
     }
-
-    // Getters
     getName() {
         return this.name;
     }
-
     getAddress() {
         return this.address;
     }
-
-    // Setters
-    setName(name) {
-        this.name = name;
-    }
-
     setAddress(address) {
         this.address = address;
     }
-
-    // Calculate average rating
-    calculateAverageReviewRating() {
-        if (this.reviews.length === 0) {
+    setName(name) {
+        this.name = name;
+    }
+    calculateAverageReviewRating(){
+        let sumOfReviews = 0;
+        for(let i = 0; i < this.reviews.length; i++){
+            sumOfReviews += this.reviews[i].stars
+        }
+        if(this.reviews.length == 0){
             return "No Reviews Found";
         }
-
-        let sumOfReviews = 0;
-        for (let i = 0; i < this.reviews.length; i++) {
-            sumOfReviews += this.reviews[i].stars;
-        }
-
         return sumOfReviews / this.reviews.length;
     }
-
-    // Add a review
-    addReview(review) {
+    addReview(review){
         this.reviews.push(review);
     }
-<<<<<<< user-flow-diagram
     //Andy's work, addMenuItem method
     addMenuItem(menuItem){
         this.menu.push(menuItem);
-=======
 
     // Edit an existing review
     editReview(index, updatedReview) {
@@ -59,6 +45,6 @@ class RestaurantModel {
         }
 
         this.reviews[index] = updatedReview;
->>>>>>> main
     }
+
 }
