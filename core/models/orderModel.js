@@ -7,8 +7,8 @@ class OrderModel {
     */
     constructor(username = "NO USERNAME",
                 address = "NO ADDRESS",
-                restaurant = "NO RESTAURANT",
-                id = "NO ID") {
+                restaurant,
+                id) {
         this.username = username;
         this.address = address;
         this.restaurant = restaurant;
