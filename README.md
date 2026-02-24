@@ -106,3 +106,32 @@ The test results will display on the page.
 - `MenuItemModel` (if implemented) – Represents a menu item with name, price, description, and category.
 - `UserModel` (if implemented) - Represents a user with ID, name, and email.
 - `menuModel` - Stores and manages menu items, and allows for addition/removal/retrieval
+
+## Validation Rules
+To ensure data integrity and prevent invalid inputs, the following validation rules are enforced in the application.
+### Restaurant Validation
+- Name
+  - Must not be empty
+  - must be a string
+
+### Menu validation
+- Name
+    - Must not be empty
+    - Must be a string
+
+- Price
+    - Must be a number.
+    - Must be greater than 0.
+    - Negative or zero values are not allowed.
+
+- Rating
+    - Must be a number.
+    - Must be between 1 and 5 (inclusive).
+
+### Order Validation
+- An order must contain at least one valid menu item
+- Quantity must be a positive integer
+
+### Cart Validation
+- The cart cannot proceed to checkout if it is empty
+- After successful checkout, the cart is cleared
