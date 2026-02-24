@@ -46,6 +46,12 @@ This project demonstrates object-oriented programming in JavaScript, input valid
     - `getAllItems()` – Returns all menu items
     - `getItemsByCategory(category)` – Returns all items in a specific category
     - `clearMenu()` – Removes all menu items from the menu
+- **Order** – Stores info pretaining to a speciifc order
+    - Properties: `username`, `address`, `restuarant`, `id`, `totalCost`, 
+      `itemsOrdered`, `totalItems`
+    - Methods: `getUserName()`, `getAddress()`, `getRestuarant()`, `getId()`, `getTotalItems()`, `getItems()`, `getCost()`, `addMenuItem(aMenuItem)`, `removeMenuItem(aMenuItem)`
+      
+
 ---
 
 ## Learning Goals
