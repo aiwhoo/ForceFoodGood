@@ -38,20 +38,21 @@ class RestaurantModel {
         })
     }
     //Andy's work, addMenuItem method
-    addMenuItem(menuItem){
+    addMenuItem(menuItem) {
         this.menu.push(menuItem);
 
-    // Edit an existing review
-    editReview(index, updatedReview) {
-        if (index < 0 || index >= this.reviews.length) {
-            throw new Error("Invalid review index");
-        }
+        // Edit an existing review
+        editReview(index, updatedReview)
+        {
+            if (index < 0 || index >= this.reviews.length) {
+                throw new Error("Invalid review index");
+            }
 
-        if (!(updatedReview instanceof RatingModel)) {
-            throw new Error("Updated Review must be a RatingModel instance");
-        }
+            if (!(updatedReview instanceof RatingModel)) {
+                throw new Error("Updated Review must be a RatingModel instance");
+            }
 
-        this.reviews[index] = updatedReview;
+            this.reviews[index] = updatedReview;
+        }
     }
-
 }
