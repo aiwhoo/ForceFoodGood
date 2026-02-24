@@ -1,5 +1,5 @@
-class Restaurant {
-    constructor(name, address, rating = null) {
+class RestaurantModel {
+    constructor(name, address) {
         this.name = name;
         this.address = address;
         this.rating = rating;
@@ -36,6 +36,13 @@ class Restaurant {
 
     addReview(review) {
         this.reviews.push(review);
+    }
+    removeMenuItem(menuItem) {
+        this.menu = this.menu.filter((item) => {
+            // should filter out the removed menuItem
+            // will not error if removed menuItem is not in the menu
+            return item !== menuItem;
+        })
     }
 
     // Prevent duplicate menu item names (case-insensitive).
