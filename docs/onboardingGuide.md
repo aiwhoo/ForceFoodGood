@@ -1,13 +1,13 @@
 # Onboarding Guide for New Contributors
 
 ## Introduction
-Welcome to ForceFoodGood! This guide will help you understand the project and how to contribute.
+Welcome to ForceFoodGood! This guide will help new contributors understand the structure of the project and how to get started.
 
 ## Project Structure
-- core/models/ – Data models
-- docs/ – Documentation files
-- index.html – Main entry
-- index.js – Application logic
+- core/ – Contains application models
+- docs/ – Project documentation
+- index.html – Main entry point
+- index.js – Main logic
 - styles.css – Styling
 
 ## How to Contribute
