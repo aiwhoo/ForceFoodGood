@@ -99,3 +99,4 @@ The test results will display on the page.
 - `RatingModel` – Stores review data including stars, username, date, and an optional review.
 - `MenuItemModel` (if implemented) – Represents a menu item with name, price, description, and category.
 - `UserModel` (if implemented) - Represents a user with ID, name, and email.
+- `MenuModel` - Stores and manages menu items
