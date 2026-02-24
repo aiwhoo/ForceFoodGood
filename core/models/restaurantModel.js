@@ -1,9 +1,10 @@
 class RestaurantModel {
-    constructor(name, address) {
+    constructor(name, address, operatingHours = "Unspecified") {
         this.name = name;
         this.address = address;
         this.reviews = [];
         this.menu = []; // store menu items
+        this.operatingHours = operatingHours; //knows when restaurant is open
     }
     getName() {
         return this.name;
@@ -11,11 +12,17 @@ class RestaurantModel {
     getAddress() {
         return this.address;
     }
+    getOperatingHours(){
+        return this.operatingHours;
+    }
     setAddress(address) {
         this.address = address;
     }
     setName(name) {
         this.name = name;
+    }
+    setOperatingHours(hours) {
+        this.operatingHours = hours;
     }
     calculateAverageReviewRating(){
         let sumOfReviews = 0;
@@ -31,9 +38,9 @@ class RestaurantModel {
         this.reviews.push(review);
     }
     //Andy's work, addMenuItem method
-    addMenuItem(menuItem){
+    addMenuItem(menuItem) {
         this.menu.push(menuItem);
-
+    }
     // Edit an existing review
     editReview(index, updatedReview) {
         if (index < 0 || index >= this.reviews.length) {
