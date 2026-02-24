@@ -40,7 +40,12 @@ This project demonstrates object-oriented programming in JavaScript, input valid
 
 - **Order** – Stores order information and status
     - Includes order ID counter and checkout status
-
+-  **Menu** – Stores and manages menu items
+    - `addItem(menuItem)` – Adds a new `MenuItemModel` to the menu
+    - `removeItemByName(name)` – Removes a menu item by its name
+    - `getAllItems()` – Returns all menu items
+    - `getItemsByCategory(category)` – Returns all items in a specific category
+    - `clearMenu()` – Removes all menu items from the menu
 ---
 
 ## Learning Goals
@@ -94,3 +99,4 @@ The test results will display on the page.
 - `RatingModel` – Stores review data including stars, username, date, and an optional review.
 - `MenuItemModel` (if implemented) – Represents a menu item with name, price, description, and category.
 - `UserModel` (if implemented) - Represents a user with ID, name, and email.
+- `menuModel` - Stores and manages menu items, and allows for addition/removal/retrieval
