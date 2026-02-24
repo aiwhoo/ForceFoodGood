@@ -30,6 +30,13 @@ class RestaurantModel {
     addReview(review){
         this.reviews.push(review);
     }
+    removeMenuItem(menuItem) {
+        this.menu = this.menu.filter((item) => {
+            // should filter out the removed menuItem
+            // will not error if removed menuItem is not in the menu
+            return item !== menuItem;
+        })
+    }
     //Andy's work, addMenuItem method
     addMenuItem(menuItem){
         this.menu.push(menuItem);
