@@ -48,6 +48,7 @@ class RestaurantModel {
     addMenuItem(menuItem) {
         this.menu.push(menuItem);
     }
+
     // Edit an existing review
     editReview(index, updatedReview) {
         if (index < 0 || index >= this.reviews.length) {
@@ -60,5 +61,4 @@ class RestaurantModel {
 
         this.reviews[index] = updatedReview;
     }
-
 }
