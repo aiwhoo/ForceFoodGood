@@ -56,12 +56,17 @@ class OrderModel {
         return this.totalCost;
     }
 
-    // adds an item to the cart
+    // returns list of items
+    getItems() {
+        return this.itemsOrdered;
+    }
+
+    // adds an item to the order
     addMenuItem(aMenuItem) {
         this.itemsOrdered.push(aMenuItem);
         this.updateCost();
     }
-    // removes an item from the cart
+    // removes an item from the order
     removeMenuItem(aMenuItem) {
         this.itemsOrdered.splice(this.itemsOrdered.indexOf(aMenuItem), 1);
         this.updateCost();

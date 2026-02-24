@@ -38,8 +38,11 @@ This project demonstrates object-oriented programming in JavaScript, input valid
 
 - **User** – Stores user information (email, name, GitHub handle)
 
-- **Order** – Stores order information and status
-    - Includes order ID counter and checkout status
+- **Order** – Stores info pretaining to a speciifc order
+    - Properties: `username`, `address`, `restuarant`, `id`, `totalCost`, 
+      `itemsOrdered`, `totalItems`
+    - Methods: `getUserName()`, `getAddress()`, `getRestuarant()`, `getId()`, `getTotalItems()`, `getItems()`, `getCost()`, `addMenuItem(aMenuItem)`, `removeMenuItem(aMenuItem)`
+      
 
 ---
 
