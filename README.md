@@ -154,3 +154,15 @@ To ensure data integrity and prevent invalid inputs, the following validation ru
 ### Cart Validation
 - The cart cannot proceed to checkout if it is empty
 - After successful checkout, the cart is cleared
+## Testing Guide
+
+### How to run tests
+1. Open terminal
+2. Run:
+npm test
+### How to write tests
+- Go to tests folder  
+- Create file like:
+MenuItemModel.test.js
+- Example:
+const item = new MenuItemModel("Burger", 8.99);
