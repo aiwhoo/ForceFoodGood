@@ -27,7 +27,6 @@ class RestaurantModel {
         this.name = name;
     }
 
-    calculateAverageReviewRating() {
     setOperatingHours(hours) {
         this.operatingHours = hours;
     }
@@ -70,6 +69,7 @@ class RestaurantModel {
         }
 
         return this.rating;
+    }
     // Edit an existing review
     editReview(index, updatedReview) {
         if (index < 0 || index >= this.reviews.length) {
@@ -82,4 +82,5 @@ class RestaurantModel {
 
         this.reviews[index] = updatedReview;
     }
+
 }
