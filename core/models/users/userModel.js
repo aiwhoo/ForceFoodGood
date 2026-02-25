@@ -1,4 +1,4 @@
-export class UserModel {
+class UserModel {
     constructor(id, firstName = "", lastName = "", email = "") {
         this.id = id;
         this.firstName = firstName;
