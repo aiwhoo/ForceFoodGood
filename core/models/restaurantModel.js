@@ -4,7 +4,6 @@ class RestaurantModel {
         this.address = address;
         this.reviews = [];
         this.rating = 0; // new property to store average rating
-        this.menu = []; // store menu items
         this.operatingHours = operatingHours; //knows when restaurant is open
     }
 
@@ -46,17 +45,6 @@ class RestaurantModel {
 
     addReview(review) {
         this.reviews.push(review);
-    }
-    removeMenuItem(menuItem) {
-        this.menu = this.menu.filter((item) => {
-            // should filter out the removed menuItem
-            // will not error if removed menuItem is not in the menu
-            return item !== menuItem;
-        })
-    }
-    //Andy's work, addMenuItem method
-    addMenuItem(menuItem) {
-        this.menu.push(menuItem);
     }
 
     updateRating() {
