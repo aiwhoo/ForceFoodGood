@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Mocha Tests</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css"/>
     <script src="../core/models/restaurantModel.js"></script>
     <script src="../core/models/ratingsModel.js"></script>
     <script src="../core/models/orderModel.js"></script>
     <script src="../core/models/menuItemModel.js"></script>
     <script src="../core/models/users/userModel.js"></script>
     <script src="../core/models/users/CustomerUserModel.js"></script>
+    <script src="../tests/OrderModelImplementation.test.js"></script>
 </head>
 <body>
 <div id="mocha"></div>
@@ -26,11 +27,11 @@
             let restaurant1 = new RestaurantModel("Anish's Cat Cafe", "101 North Dupont Road");
             expect(restaurant1.reviews.length).to.equal(0);
         })
-        it("average of no reviews is No Reviews Found", function() {
+        it("average of no reviews is No Reviews Found", function () {
             let restaurant1 = new RestaurantModel("Anish's Cat Cafe", "101 North Dupont Road");
             expect(restaurant1.calculateAverageReviewRating()).to.equal("No Reviews Found");
         })
-        it("average of no reviews is No Reviews Found", function() {
+        it("average of no reviews is No Reviews Found", function () {
             let restaurant1 = new RestaurantModel("Anish's Cat Cafe", "101 North Dupont Road");
             let review1 = new RatingModel(4, "Matt", "Today", "hello world");
             restaurant1.addReview(review1);
@@ -38,63 +39,107 @@
         })
     })
     describe("Order System", function () {
-        it ("cost assert", function () {
+        let pizzaItem = new MenuItemModel("pizza", 5, "none", "idk")
+        let pastaItem = new MenuItemModel("pasta", 7, "none", "idk")
+        let waterItem = new MenuItemModel("water", 1.001, "none", "idk")
+        let potatoItem = new MenuItemModel("potato", 3, "none", "idk")
 
+        it("updatingCost & totalItems (happy path)", function () {
             let order1 = new OrderModel(
                 "John",
                 "123 ave",
-                new RestaurantModel("Anish's Cat Cafe", "101 North Dupont Road"),
+                new RestaurantModel("Anish's Cat Cafe",
+                    "101 North Dupont Road"),
                 1)
-            order1.addMenuItem(new MenuItemModel("pizza", 5, "none","idk"))
-            order1.addMenuItem(new MenuItemModel("pasta", 7, "none","idk"))
-            console.log('price:', order1.getCost());
+            order1.addMenuItem(pizzaItem);
+            order1.addMenuItem(pastaItem);
+            console.log('price before removal:', order1.getCost());
             expect(order1.getCost()).to.equal(12);
+            order1.removeMenuItem(pastaItem);
+            console.log('price after removal:', order1.getCost());
+            expect(order1.getCost()).to.equal(5);
+        })
+        it("addMenuItem w/ small decimal price (edge case)", function () {
+            let order2 = new OrderModel(
+                "Harold",
+                "422 ave",
+                new RestaurantModel("Anish's Cat Cafe",
+                    "101 North Dupont Road"),
+                2)
+            // would want 1.001 to round to 1.00
+            order2.addMenuItem(waterItem)
+            expect(order2.getCost()).to.equal(1.00);
+        })
+        it("removeMenuItem where menuItem doesn't exist in order (invalid input)", function () {
+            let order3 = new OrderModel(
+                "Oswald",
+                "243 ave",
+                new RestaurantModel("Anish's Cat Cafe",
+                    "101 North Dupont Road"),
+                3)
+            order3.removeMenuItem(potatoItem)
+            expect(order3.getCost()).to.equal(-3);
+        })
+        it("totalItems changes when a new item is added or one is removed (state change)", function () {
+            let order4 = new OrderModel(
+                "Jenny",
+                "784 ave",
+                new RestaurantModel("Anish's Cat Cafe",
+                    "101 North Dupont Road"),
+                4)
+            expect(order4.getTotalItems()).to.equal(0);
+            order4.addMenuItem(pizzaItem);
+            order4.addMenuItem(potatoItem);
+            expect(order4.getTotalItems()).to.equal(2);
+            order4.removeMenuItem(potatoItem)
+            expect(order4.getTotalItems()).to.equal(1);
         })
 
+
     })
-    describe("User Model Test", function(){
-        it("exhibits firstname last name", function(){
+    describe("User Model Test", function () {
+        it("exhibits firstname last name", function () {
             let customer1 = new CustomerUserModel("cus5.tomerId5", "David");
             //let customer2 = new CustomerUserModel();
             expect(customer1.getFirstName()).to.equal("David");
         })
     })
-/*
-    describe("Menu System", function() {
-        it("starts with zero items", function() {
-            let menu = new MenuModel("Dinner Menu");
-            expect(menu.getItems().length).to.equal(0);
+    /*
+        describe("Menu System", function() {
+            it("starts with zero items", function() {
+                let menu = new MenuModel("Dinner Menu");
+                expect(menu.getItems().length).to.equal(0);
+            })
+            it("can add an item to the menu", function() {
+                let menu = new MenuModel("Dinner Menu");
+                let item = new MenuItem("Burger", 9.99, "A juicy beef burger", "Mains");
+                menu.addItem(item);
+                expect(menu.getItems().length).to.equal(1);
+            })
+            it("can remove an item from the menu", function() {
+                let menu = new MenuModel("Dinner Menu");
+                let item = new MenuItem("Burger", 9.99, "A juicy beef burger", "Mains");
+                menu.addItem(item);
+                menu.removeItem("Burger");
+                expect(menu.getItems().length).to.equal(0);
+            })
+            it("can get items filtered by category", function() {
+                let menu = new MenuModel("Dinner Menu");
+                menu.addItem(new MenuItem("Burger", 9.99, "A juicy beef burger", "Mains"));
+                menu.addItem(new MenuItem("Fries", 3.99, "Crispy fries", "Sides"));
+                menu.addItem(new MenuItem("Steak", 24.99, "Grilled sirloin", "Mains"));
+                expect(menu.getItemsByCategory("Mains").length).to.equal(2);
+            })
+            it("throws an error when removing an item that does not exist", function() {
+                let menu = new MenuModel("Dinner Menu");
+                expect(() => menu.removeItem("Pizza")).to.throw("Item not found in menu");
+            })
+            it("throws an error when creating a MenuItem with a negative price", function() {
+                expect(() => new MenuItem("Bad Item", -1, "desc", "Mains")).to.throw("Price must be 0 or greater");
+            })
         })
-        it("can add an item to the menu", function() {
-            let menu = new MenuModel("Dinner Menu");
-            let item = new MenuItem("Burger", 9.99, "A juicy beef burger", "Mains");
-            menu.addItem(item);
-            expect(menu.getItems().length).to.equal(1);
-        })
-        it("can remove an item from the menu", function() {
-            let menu = new MenuModel("Dinner Menu");
-            let item = new MenuItem("Burger", 9.99, "A juicy beef burger", "Mains");
-            menu.addItem(item);
-            menu.removeItem("Burger");
-            expect(menu.getItems().length).to.equal(0);
-        })
-        it("can get items filtered by category", function() {
-            let menu = new MenuModel("Dinner Menu");
-            menu.addItem(new MenuItem("Burger", 9.99, "A juicy beef burger", "Mains"));
-            menu.addItem(new MenuItem("Fries", 3.99, "Crispy fries", "Sides"));
-            menu.addItem(new MenuItem("Steak", 24.99, "Grilled sirloin", "Mains"));
-            expect(menu.getItemsByCategory("Mains").length).to.equal(2);
-        })
-        it("throws an error when removing an item that does not exist", function() {
-            let menu = new MenuModel("Dinner Menu");
-            expect(() => menu.removeItem("Pizza")).to.throw("Item not found in menu");
-        })
-        it("throws an error when creating a MenuItem with a negative price", function() {
-            expect(() => new MenuItem("Bad Item", -1, "desc", "Mains")).to.throw("Price must be 0 or greater");
-        })
-    })
 
- */
+     */
 </script>
 <script src="test.array.js"></script>
 <script src="test.object.js"></script>
