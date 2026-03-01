@@ -1,65 +1,72 @@
-// Import Chai's expect function for writing assertions
-import { expect } from 'chai';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Mocha Tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Mocha CSS for test output -->
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+</head>
+<body>
+    <div id="mocha"></div>
 
-// Import the Cart model we are testing
-import Cart from '../core/models/cartModel.js';
+    <!-- Mocha and Chai JS for testing -->
+    <script src="https://unpkg.com/mocha/mocha.js"></script>
+    <script src="https://unpkg.com/chai@4/chai.js"></script>
 
-// Group all cart tests together
-describe('Cart Model Tests', () => {
+    <!-- Your original tests, inside a module so imports work -->
+    <script type="module">
+        // Set up Mocha
+        mocha.setup("bdd");
 
-  // This will run before each test
-  // It creates a fresh cart so tests do not affect each other
-  let cart;
+        // Use Chai expect
+        const expect = chai.expect;
 
-  beforeEach(() => {
-    cart = new Cart();
-  });
+        // Import Cart from your module
+        import Cart from '../core/models/cartModel.js';
 
-  // Test 1: Happy Path; Check if a new item is added correctly
-  it('adds a new item correctly', () => {
-    cart.addItem('Burger', 10, 2);
+        // Your tests remain unchanged
+        describe('Cart Model Tests', () => {
 
-    // The cart should now have 1 item
-    expect(cart.items.length).to.equal(1);
+            let cart;
 
-    // Check that the item details are correct
-    expect(cart.items[0].name).to.equal('Burger');
-    expect(cart.items[0].price).to.equal(10);
-    expect(cart.items[0].quantity).to.equal(2);
-  });
+            beforeEach(() => {
+                cart = new Cart();
+            });
 
-  // Test 2: If the same item is added again, quantity should increase
-  it('updates quantity when adding an existing item', () => {
-    cart.addItem('Burger', 10, 1);
-    cart.addItem('Burger', 10, 3);
+            it('adds a new item correctly', () => {
+                cart.addItem('Burger', 10, 2);
+                expect(cart.items.length).to.equal(1);
+                expect(cart.items[0].name).to.equal('Burger');
+                expect(cart.items[0].price).to.equal(10);
+                expect(cart.items[0].quantity).to.equal(2);
+            });
 
-    // It should still only have one item
-    expect(cart.items.length).to.equal(1);
+            it('updates quantity when adding an existing item', () => {
+                cart.addItem('Burger', 10, 1);
+                cart.addItem('Burger', 10, 3);
+                expect(cart.items.length).to.equal(1);
+                expect(cart.items[0].quantity).to.equal(4);
+            });
 
-    // Quantity should be combined (1 + 3 = 4)
-    expect(cart.items[0].quantity).to.equal(4);
-  });
+            it('calculates total correctly', () => {
+                cart.addItem('Burger', 10, 2);
+                cart.addItem('Fries', 5, 1);
+                const total = cart.calculateTotal();
+                expect(total).to.equal('25.00');
+            });
 
-  // Test 3: Check if total price is calculated correctly
-  it('calculates total correctly', () => {
-    cart.addItem('Burger', 10, 2); // 20
-    cart.addItem('Fries', 5, 1);   // 5
+            it('clears all items after checkout', () => {
+                cart.addItem('Burger', 10, 1);
+                cart.addItem('Fries', 5, 1);
+                cart.checkout();
+                expect(cart.items.length).to.equal(0);
+            });
 
-    const total = cart.calculateTotal();
+        });
 
-    // Total should be returned as a string with 2 decimals
-    expect(total).to.equal('25.00');
-  });
-
-  // Test 4: After checkout, cart should be empty
-  it('clears all items after checkout', () => {
-    cart.addItem('Burger', 10, 1);
-    cart.addItem('Fries', 5, 1);
-
-    cart.checkout();
-
-    // Cart should now be empty
-    expect(cart.items.length).to.equal(0);
-  });
-
-});
+        // Run Mocha in the browser
+        mocha.run();
+    </script>
+</body>
+</html>
