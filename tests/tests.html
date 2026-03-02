@@ -37,6 +37,64 @@
             expect(restaurant1.calculateAverageReviewRating()).to.equal(4);
         })
     })
+    describe("RestaurantModel Extended Tests - EZ", function() {
+        it("successfully edits an existing review", function() {
+            let restaurant = new RestaurantModel("Cafe 1", "123 St");
+            let review1 = new RatingModel(5, "Alice", "Today", "Great!");
+            restaurant.addReview(review1);
+    
+            let updatedReview = new RatingModel(4, "Alice", "Today", "Good");
+            restaurant.editReview(0, updatedReview);
+    
+            expect(restaurant.reviews[0].stars).to.equal(4);
+            expect(restaurant.reviews[0].review).to.equal("Good");
+        });
+        it("updateRating() correctly handles decimal ratings", function() {
+            let restaurant = new RestaurantModel("Cafe 2", "456 St");
+            let review1 = new RatingModel(4.5, "Bob", "Today", "Nice");
+            let review2 = new RatingModel(3.5, "Carol", "Today", "Okay");
+    
+            restaurant.addReview(review1);
+            restaurant.addReview(review2);
+    
+            restaurant.updateRating();
+    
+            expect(restaurant.rating).to.equal(4); // (4.5+3.5)/2 = 4
+        });
+        it("throws error when editing a review with invalid index or object type", function() {
+            let restaurant = new RestaurantModel("Cafe 3", "789 St");
+            let review1 = new RatingModel(5, "Alice", "Today", "Great!");
+            restaurant.addReview(review1);
+    
+            let badReview = { stars: 3, comment: "Okay" }; // incorrect object type
+    
+            // Invalid index tests
+            expect(() => restaurant.editReview(5, review1)).to.throw("Invalid review index");
+            expect(() => restaurant.editReview(-1, review1)).to.throw("Invalid review index");
+    
+            // Invalid object type test
+            expect(() => restaurant.editReview(0, badReview)).to.throw("Updated Review must be a RatingModel instance");
+        });
+        it("addMenuItem() and removeMenuItem() correctly update the menu array", function() {
+            let restaurant = new RestaurantModel("Cafe 4", "321 St");
+            let item1 = { name: "Pizza", price: 10 };
+            let item2 = { name: "Burger", price: 8 };
+    
+            restaurant.addMenuItem(item1);
+            restaurant.addMenuItem(item2);
+    
+            expect(restaurant.menu.length).to.equal(2);
+    
+            restaurant.removeMenuItem(item1);
+            expect(restaurant.menu.length).to.equal(1);
+            expect(restaurant.menu[0]).to.equal(item2);
+    
+            // Removing non-existent item should not throw
+            restaurant.removeMenuItem({ name: "Salad", price: 5 });
+            expect(restaurant.menu.length).to.equal(1);
+        });
+    
+    });
     describe("Order System", function () {
         it ("cost assert", function () {
 
