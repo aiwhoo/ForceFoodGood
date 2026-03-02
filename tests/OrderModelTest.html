@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Mocha Tests</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Mocha Styles -->
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+</head>
+
+<body>
+
+<div id="mocha"></div>
+
+<!-- Chai + Mocha -->
+<script src="https://unpkg.com/chai@4/chai.js"></script>
+<script src="https://unpkg.com/mocha/mocha.js"></script>
+<script src="../core/models/restaurantModel.js"></script>
+<script src="../core/models/orderModel.js"></script>
+<script src="../core/models/menuItemModel.js"></script>
+
+<!-- Test File (ES Module) -->
+<script type="module">
+
+
+
+// Setup Mocha
+mocha.setup("bdd");
+const expect = chai.expect;
+
+
+// ---------------- TESTS ----------------
+
+describe("Order System", function () {
+
+    it("item removal test", function () {
+
+        let order1 = new OrderModel(
+            "John",
+            "123 ave",
+            new RestaurantModel("Anish's Cat Cafe", "101 North Dupont Road"),
+            1
+        );
+
+        let item = new MenuItemModel("pizza", 5, "none", "idk");
+
+        order1.addMenuItem(item);
+        order1.removeMenuItem(item);
+
+        expect(order1.getCost()).to.equal(0);
+    });
+
+
+    it("cost assert", function () {
+
+        let order1 = new OrderModel(
+            "John",
+            "123 ave",
+            new RestaurantModel("Anish's Cat Cafe", "101 North Dupont Road"),
+            1
+        );
+
+        order1.addMenuItem(new MenuItemModel("pizza", 5, "none", "idk"));
+        order1.addMenuItem(new MenuItemModel("pasta", 7, "none", "idk"));
+
+        expect(order1.getCost()).to.equal(12);
+    });
+
+
+    it("remove more than in the cart", function () {
+
+        let order1 = new OrderModel(
+            "John",
+            "123 ave",
+            new RestaurantModel("Anish's Cat Cafe", "101 North Dupont Road"),
+            1
+        );
+
+        let item = new MenuItemModel("pizza", 5, "none", "idk");
+
+        order1.removeMenuItem(item);
+
+        expect(order1.getCost()).to.equal(0);
+    });
+
+
+    it("invalid arguments to constructor", function () {
+
+        expect(() => {
+
+            new OrderModel(
+                "John",
+                [0, 0], // invalid address
+                new RestaurantModel("Anish's Cat Cafe", "101 North Dupont Road"),
+                1
+            );
+
+        }).to.throw();
+    });
+
+});
+
+
+// Run tests
+mocha.run();
+
+</script>
+
+</body>
+</html>
