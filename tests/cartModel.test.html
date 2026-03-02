@@ -12,9 +12,13 @@
 <script src="https://unpkg.com/chai@4/chai.js"></script>
 <script src="https://unpkg.com/mocha/mocha.js"></script>
 
+<!-- Load Cart model as a module and expose it globally -->
 <script type="module">
     import Cart from "../core/models/cartModel.js";
+    window.Cart = Cart;
+</script>
 
+<script class="mocha-init">
     mocha.setup("bdd");
     const expect = chai.expect;
 
@@ -55,7 +59,9 @@
         });
 
     });
+</script>
 
+<script class="mocha-exec">
     mocha.run();
 </script>
 
