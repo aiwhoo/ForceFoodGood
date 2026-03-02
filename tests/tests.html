@@ -59,6 +59,30 @@
             expect(customer1.getFirstName()).to.equal("David");
         })
     })
+    describe("MenuItemModel Price Validation", function () {
+
+        it("accepts a valid numeric price", function () {
+            let item = new MenuItemModel("Burger", 9.99);
+            expect(item.getPrice()).to.equal(9.99);
+        });
+
+        it("allows a price of 0", function () {
+            let item = new MenuItemModel("Free Sample", 0);
+            expect(item.getPrice()).to.equal(0);
+        });
+
+        it("invalid input: price should not be a string", function () {
+            let item = new MenuItemModel("Soda", "free");
+            expect(item.getPrice()).to.not.be.a("number");
+        });
+
+        it("reflects updated price when changed", function () {
+            let item = new MenuItemModel("Ice Cream", 4.00);
+            item.price = 5.00;
+            expect(item.getPrice()).to.equal(5.00);
+        });
+
+    });
 /*
     describe("Menu System", function() {
         it("starts with zero items", function() {
