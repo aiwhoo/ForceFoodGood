@@ -24,7 +24,9 @@ class RestaurantModel {
     }
 
     setName(name) {
-        this.name = name;
+        if (name && typeof name === 'string' && name.trim().length > 0) {
+            this.name = name;
+        }
     }
 
     setOperatingHours(hours) {

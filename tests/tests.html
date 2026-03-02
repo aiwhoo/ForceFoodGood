@@ -59,6 +59,30 @@
             expect(customer1.getFirstName()).to.equal("David");
         })
     })
+    describe("RestaurantModel Test Kai", function () {
+        it("should correctly initialize name, address, and operatingHours during instantiation", function () {
+            let restaurant = new RestaurantModel("Anish's Cat Cafe", "123 Main St", "9am-10pm");
+            expect(restaurant.getName()).to.equal("Anish's Cat Cafe");
+            expect(restaurant.getAddress()).to.equal("123 Main St");
+            expect(restaurant.getOperatingHours()).to.equal("9am-10pm");
+        });
+        it("should update the operatingHours state when setOperatingHours is called", function () {
+            let restaurant = new RestaurantModel("Anish's Cat Cafe", "123 Main St", "TBD");
+            restaurant.setOperatingHours("24/7");
+            expect(restaurant.getOperatingHours()).to.equal("24/7");
+        });
+        it("should not allow setting an empty string as the restaurant name", function () {
+            let restaurant = new RestaurantModel("Original Name", "123 Main St");
+            restaurant.setName("");
+            expect(restaurant.getName()).to.equal("Original Name");
+        });
+        it("should return exactly 'No Reviews Found' when length is 0", function () {
+            let restaurant = new RestaurantModel("Fresh Cafe", "456 Road");
+            let result = restaurant.calculateAverageReviewRating();
+            expect(result).to.be.a('string');
+            expect(result).to.equal("No Reviews Found");
+        });
+    });
 /*
     describe("Menu System", function() {
         it("starts with zero items", function() {
