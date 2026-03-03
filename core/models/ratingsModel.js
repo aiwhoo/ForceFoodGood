@@ -9,4 +9,3 @@ class RatingModel {
         this.review = review;
     }
 }
-module.exports = RatingModel;
