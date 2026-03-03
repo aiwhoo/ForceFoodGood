@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <title>Mocha Tests</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
-    <script src="../core/models/restaurantModel.js"></script>
-    <script src="../core/models/ratingsModel.js"></script>
-    <script src="../core/models/orderModel.js"></script>
+
+    <!-- Load the model -->
     <script src="../core/models/menuItemModel.js"></script>
-    <script src="../core/models/users/userModel.js"></script>
-    <script src="../core/models/users/CustomerUserModel.js"></script>
+
 </head>
+
 <body>
+
 <div id="mocha"></div>
 
 <script src="https://unpkg.com/chai@4/chai.js"></script>
 <script src="https://unpkg.com/mocha/mocha.js"></script>
 
-<script class="mocha-init">
+<script>
+
     mocha.setup("bdd");
     const expect = chai.expect;
     describe("Restaurant Rating System", function () {
@@ -192,14 +194,58 @@
  */
 </script>
 
-<script src="ratingsModelTestAndy.js"></script>
-<script src="ratingsModeltest.js"></script>
+    /* ---------------- MenuItemModel Tests ---------------- */
 
-<script src="test.array.js"></script>
-<script src="test.object.js"></script>
-<script src="test.xhr.js"></script>
-<script class="mocha-exec">
+    describe("MenuItemModel Tests", function () {
+
+        // 1️⃣ Happy Path
+        it("constructor correctly sets and returns price", function () {
+
+            let item = new MenuItemModel("Burger", 9.99, "Tasty burger", "Mains");
+
+            expect(item.getPrice()).to.equal(9.99);
+
+        });
+
+
+        // 2️⃣ Edge Case
+        it("string price remains a string (shows missing validation risk)", function () {
+
+            let item = new MenuItemModel("BadPrice", "9.99", "Oops", "Mains");
+
+            expect(item.getPrice()).to.equal("9.99");
+            expect(item.getPrice()).to.be.a("string");
+
+        });
+
+
+        // 3️⃣ Invalid Input / Risk Case
+        it("negative price is accepted (shows missing validation risk)", function () {
+
+            let item = new MenuItemModel("Bad Item", -1, "desc", "Mains");
+
+            expect(item.getPrice()).to.equal(-1);
+
+        });
+
+
+        // 4️⃣ State / Behavior Validation
+        it("getPrice reflects updated price when property changes", function () {
+
+            let item = new MenuItemModel("Pizza", 12, "Cheesy", "Mains");
+
+            item.price = 15;
+
+            expect(item.getPrice()).to.equal(15);
+
+        });
+
+    });
+
     mocha.run();
+
 </script>
+
 </body>
+
 </html>
