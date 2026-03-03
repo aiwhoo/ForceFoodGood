@@ -4,15 +4,17 @@ class Cart {
         this.items = [];
     }
 
-    addItem(name, price, quantity = 1) {
-        const existingItem = this.items.find(item => item.name === name);
+addItem(name, price, quantity = 1) {
+    // BUG FIX: Prevent negative quantities from being added
+    if (quantity <= 0) return; 
 
-        if (existingItem) {
-            existingItem.quantity += quantity;
-        } else {
-            this.items.push({ name, price, quantity });
-        }
+    const existingItem = this.items.find(item => item.name === name);
+    if (existingItem) {
+        existingItem.quantity += quantity;
+    } else {
+        this.items.push({ name, price, quantity });
     }
+}
 
     calculateTotal() {
         let total = 0;
