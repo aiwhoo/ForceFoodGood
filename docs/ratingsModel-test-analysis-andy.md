@@ -33,3 +33,12 @@
 - **What could break if this fails:** Missing or incorrect data could lead to broken UI, inaccurate reports, or loss of user trust.
 - **Type of test:** Business rule enforcement / State verification
 - **Benefit of testing:** Protects business logic, ensures reliability, and documents expected behavior.
+
+---
+
+## Test 5: Decimal Stars Test
+- **What is being tested:** Creating a rating with a decimal number of stars (e.g., 3.5).
+- **Why it is important:** Ensures the model correctly handles decimal ratings, which may be allowed in the system.
+- **What could break if this fails:** Ratings could be rounded or rejected incorrectly, causing inaccurate displays or calculations in the UI.
+- **Type of test:** Validation / Edge case
+- **Benefit of testing:** Confirms the model supports fractional star ratings and prevents regressions in rating calculations.
