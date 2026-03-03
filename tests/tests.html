@@ -87,7 +87,7 @@
         })
         it("throws an error when removing an item that does not exist", function() {
             let menu = new MenuModel("Dinner Menu");
-            expect(() => menu.removeItem("Pizza")).to.throw("Item not found in menu");
+        4    expect(() => menu.removeItem("Pizza")).to.throw("Item not found in menu");
         })
         it("throws an error when creating a MenuItem with a negative price", function() {
             expect(() => new MenuItem("Bad Item", -1, "desc", "Mains")).to.throw("Price must be 0 or greater");
