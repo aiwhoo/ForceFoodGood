@@ -1,5 +1,4 @@
 class UserModel {
-
     constructor(id, firstName = "", lastName = "", email = "") {
         this.id = id;
         this.firstName = firstName;
@@ -31,5 +30,4 @@ class UserModel {
         return [this.firstName, this.lastName, this.email, this.isLoggedIn];
     }
 }
-
-export default UserModel
+export default UserModel;
