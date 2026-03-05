@@ -18,3 +18,5 @@ class MenuItemModel {
         return this.category;
     }
 }
+
+export default MenuItemModel

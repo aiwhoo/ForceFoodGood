@@ -1,4 +1,5 @@
 class UserModel {
+
     constructor(id, firstName = "", lastName = "", email = "") {
         this.id = id;
         this.firstName = firstName;
@@ -9,6 +10,7 @@ class UserModel {
     getId() {
         return this.id;
     }
+
     getFirstName() {
         return this.firstName;
     }
@@ -29,3 +31,5 @@ class UserModel {
         return [this.firstName, this.lastName, this.email, this.isLoggedIn];
     }
 }
+
+export default UserModel
