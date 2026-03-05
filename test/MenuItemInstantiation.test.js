@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import MenuItemModel from "../core/models/MenuItemModel.js";
+import MenuItemModel from "../core/models/menuItemModel.js";
 
 describe("MenuItemModel Instantiation", () => {
 
