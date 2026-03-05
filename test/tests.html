@@ -51,7 +51,7 @@
             console.log('price:', order1.getCost());
             expect(order1.getCost()).to.equal(12);
         })
-
+        
     })
     describe("User Model Test", function(){
         it("exhibits firstname last name", function(){
@@ -86,6 +86,101 @@
 
         })
     })
+    describe("OrderModel Unit Tests", function () {
+        // 1️⃣ HAPPY PATH
+        // Valid order creation and correct total cost calculation
+        it("HAPPY PATH: should correctly calculate total cost when multiple different items are added", function () {
+
+            const order = new OrderModel(
+                "Alice",
+                "123 Street",
+                new RestaurantModel("Cafe", "Address"),
+                "001"
+            );
+
+            order.addMenuItem(new MenuItemModel("Burger", 10, "desc", "1"));
+            order.addMenuItem(new MenuItemModel("Fries", 5, "desc", "2"));
+
+            expect(order.getTotalItems()).to.equal(2);
+            expect(order.getCost()).to.equal(15);
+        });
+        // 2️⃣ EDGE CASE
+        // Removing one item when multiple identical items exist in the cart
+        it("EDGE CASE: should remove only one instance when duplicate items exist", function () {
+
+            const order = new OrderModel(
+                "Bob",
+                "456 Avenue",
+                new RestaurantModel("Pizza Place", "Address"),
+                "002"
+            );
+
+            const pizza = new MenuItemModel("Pizza", 12, "desc", "1");
+
+            // Add same object twice
+            order.addMenuItem(pizza);
+            order.addMenuItem(pizza);
+
+            expect(order.getTotalItems()).to.equal(2);
+            expect(order.getCost()).to.equal(24);
+
+            // Remove once
+            order.removeMenuItem(pizza);
+
+            // Only one should remain
+            expect(order.getTotalItems()).to.equal(1);
+            expect(order.getCost()).to.equal(12);
+        });
+        // 3️⃣ INVALID INPUT
+        // Adding an item without a valid price should not corrupt total cost
+        it("INVALID INPUT: should handle menu items with missing or invalid price safely", function () {
+
+            const order = new OrderModel(
+                "Charlie",
+                "789 Road",
+                new RestaurantModel("Grill House", "Address"),
+                "003"
+            );
+
+            // Valid item
+            order.addMenuItem(new MenuItemModel("Burger", 10, "desc", "1"));
+            expect(order.getCost()).to.equal(10);
+
+            // Invalid item (missing price)
+            const invalidItem = { name: "Mystery Item" };
+
+            order.addMenuItem(invalidItem);
+
+            // Total cost should remain valid number
+            expect(order.getCost()).to.be.a("number");
+            expect(order.getCost()).to.not.be.NaN;
+        });
+        // 4️⃣ STATE CHANGE / BEHAVIOR VALIDATION
+        // Ensures totalCost recalculates correctly after removal
+        it("STATE CHANGE: should correctly update totalCost after item removal", function () {
+
+            const order = new OrderModel(
+                "Dana",
+                "321 Blvd",
+                new RestaurantModel("Diner", "Address"),
+                "004"
+            );
+
+            const steak = new MenuItemModel("Steak", 20, "desc", "1");
+            const soda = new MenuItemModel("Soda", 3, "desc", "2");
+
+            order.addMenuItem(steak);
+            order.addMenuItem(soda);
+
+            expect(order.getCost()).to.equal(23);
+
+            order.removeMenuItem(soda);
+
+            expect(order.getTotalItems()).to.equal(1);
+            expect(order.getCost()).to.equal(20);
+        });
+
+    });
 /*
     describe("Menu System", function() {
         it("starts with zero items", function() {
@@ -123,6 +218,10 @@
 
  */
 </script>
+
+<script src="ratingsModelTestAndy.js"></script>
+<script src="ratingsModeltest.js"></script>
+
 <script src="test.array.js"></script>
 <script src="test.object.js"></script>
 <script src="test.xhr.js"></script>
