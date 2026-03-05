@@ -1,3 +1,5 @@
+import MenuItemModel from "./menuItemModel.js";
+
 class RatingModel {
     constructor(stars,  username,date, review="" ) {
         this.stars = stars;
@@ -9,3 +11,4 @@ class RatingModel {
         this.review = review;
     }
 }
+export default RatingModel

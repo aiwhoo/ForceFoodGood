@@ -1,3 +1,6 @@
+import { expect } from 'chai';
+import RatingModel from "../core/models/ratingsModel.js";
+
 describe('Restaurant Rating System (Andy Version)', function() {
     it('should create a valid rating for this happy test', function() {
         const rating = new RatingModel(3, "Andy", "2026-3-3", "The food was very tasty");

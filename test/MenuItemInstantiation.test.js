@@ -1,4 +1,5 @@
-import MenuItemModel from "../core/models/MenuItemModel.js";
+import { expect } from 'chai';
+import MenuItemModel from "../core/models/menuItemModel.js";
 
 describe("MenuItemModel Instantiation", () => {
 
@@ -9,13 +10,12 @@ describe("MenuItemModel Instantiation", () => {
     const soda = new MenuItemModel("Soda", 2.49);
     const salad = new MenuItemModel("Salad", 6.99);
 
-    test("Objects should be created correctly", () => {
-
-        expect(burger).toBeDefined();
-        expect(pizza).toBeDefined();
-        expect(fries).toBeDefined();
-        expect(soda).toBeDefined();
-        expect(salad).toBeDefined();
+    it("Objects should be created correctly", () => {
+        expect(burger).to.not.be.undefined;
+        expect(pizza).to.not.be.undefined;
+        expect(fries).to.not.be.undefined;
+        expect(soda).to.not.be.undefined;
+        expect(salad).to.not.be.undefined;
 
     });
 

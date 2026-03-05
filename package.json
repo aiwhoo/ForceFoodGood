@@ -1,0 +1,30 @@
+{
+  "name": "forcefoodgood",
+  "version": "1.0.0",
+  "description": "ForceFoodGood is a simple GrubHub-style food ordering app we made to practice backend coding and object-oriented programming. It shows how a basic food delivery system works. Users can browse restaurants, add menu items to their order, and see the total price.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aiwhoo/ForceFoodGood.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/aiwhoo/ForceFoodGood/issues"
+  },
+  "homepage": "https://github.com/aiwhoo/ForceFoodGood#readme",
+  "devDependencies": {
+    "c8": "^11.0.0",
+    "chai": "^6.2.2",
+    "mocha": "^11.3.0"
+  }
+}

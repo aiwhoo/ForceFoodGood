@@ -11,6 +11,7 @@
     <script src="../core/models/menuItemModel.js"></script>
     <script src="../core/models/users/userModel.js"></script>
     <script src="../core/models/users/CustomerUserModel.js"></script>
+    <script src="../core/models/users/RestaurantUserModel.js"></script>
 </head>
 <body>
 <div id="mocha"></div>
@@ -54,9 +55,35 @@
     })
     describe("User Model Test", function(){
         it("exhibits firstname last name", function(){
-            let customer1 = new CustomerUserModel("cus5.tomerId5", "David");
+            let customer1 = new CustomerUserModel("customer1", "David");
             //let customer2 = new CustomerUserModel();
+            console.log(customer1);
             expect(customer1.getFirstName()).to.equal("David");
+
+            let users = [new CustomerUserModel("Customer 2", "David"),
+                new UserModel("User 3", "Kai"),
+                new RestaurantUserModel("RO 2", "Aditya"),
+                new RestaurantUserModel("Restaurant", "Manu")];
+            let expectedValues = ["David", "Kai", "Aditya", "Manu"];
+            for(let i = 0; i < users.length; i++) {
+                let user = users[i];
+                let expectedValue = expectedValues[i];
+                expect(user.getFirstName()).to.equal(expectedValue)
+            }
+        })
+        it("logs in user", function(){
+            let customer2 = new CustomerUserModel("Customer 2", "Tushar", "C", "tushar@udel.edu");
+            let user1 = new UserModel("User 1", "Anish", "C", "anish@udel.edu");
+            let restaurantOwner = new RestaurantUserModel("User Owner 1", "Manu");
+            expect(customer2.login("anish@udel.edu")).to.equal(false);
+            expect(customer2.login("tushar@udel.edu")).to.equal(true);
+            expect(user1.login("anish@udel.edu")).to.equal(true);
+            expect(user1.login("tushar@udel.edu")).to.equal(false);
+            expect(restaurantOwner.login("manu@udel.edu")).to.equal(true);
+
+
+
+
         })
     })
     describe("OrderModel Unit Tests", function () {
