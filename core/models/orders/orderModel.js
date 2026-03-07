@@ -18,13 +18,7 @@ class OrderModel {
         this.id = id
     }
 
-    // calculates the cost of the order after adding item to cart
-    updateCost() {
-        this.totalCost = 0;
-        for (let i = 0; i < this.itemsOrdered.length; i++) {
-            this.totalCost += this.itemsOrdered[i].price;
-        }
-    }
+
 
     // returns number of items in cart
     getTotalItems() {
@@ -61,15 +55,7 @@ class OrderModel {
         return this.itemsOrdered;
     }
 
-    // adds an item to the order
-    addMenuItem(aMenuItem) {
-        this.itemsOrdered.push(aMenuItem);
-        this.updateCost();
-    }
-    // removes an item from the order
-    removeMenuItem(aMenuItem) {
-        this.itemsOrdered.splice(this.itemsOrdered.indexOf(aMenuItem), 1);
-        this.updateCost();
-    }
+
 
 }
+export default OrderModel;
