@@ -6,7 +6,6 @@ class OrderModel {
     id: string
     */
     constructor(username = "NO USERNAME",
-                address = "NO ADDRESS",
                 restaurant,
                 id) {
         this.username = username;
@@ -28,11 +27,6 @@ class OrderModel {
     // returns username of customer
     getUserName() {
         return this.username;
-    }
-
-    // returns delivery address
-    getUserAddress() {
-        return this.address;
     }
 
      // returns restaurant being ordered from

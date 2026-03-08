@@ -47,3 +47,4 @@ class CartOrderModel extends OrderModel {
         this.updateCost();
     }
 }
+export default CartOrderModel;
