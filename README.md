@@ -10,6 +10,7 @@ ForceFoodGood is a simple GrubHub-style food ordering app we made to practice ba
 * Restaurant class – manages restaurant details and menus
 * MenuItem class – represents individual food items
 * Order class – keeps track of items ordered and calculates total cost
+* Alert class - stores alert information and provides a base for notifications
 
 ### What we are learning:
 
@@ -71,8 +72,9 @@ This project demonstrates object-oriented programming in JavaScript, input valid
     - Properties: `username`, `address`, `restuarant`, `id`, `totalCost`, 
       `itemsOrdered`, `totalItems`
     - Methods: `getUserName()`, `getAddress()`, `getRestuarant()`, `getId()`, `getTotalItems()`, `getItems()`, `getCost()`, `addMenuItem(aMenuItem)`, `removeMenuItem(aMenuItem)`
-      
-
+- **Alert** - Stores alert information and provides a base for notifications
+    - Subclasses: `OrderALert`, `SystemALert`, `DriverAlert`
+    - Methods: `sendEmail`, `sendPush`, `logAlert`, `broadcast`, `sendSMS`, `markAcknowledged`
 ---
 
 ## Learning Goals
@@ -127,6 +129,7 @@ The test results will display on the page.
 - `MenuItemModel` (if implemented) – Represents a menu item with name, price, description, and category.
 - `UserModel` (if implemented) - Represents a user with ID, name, and email.
 - `menuModel` - Stores and manages menu items, and allows for addition/removal/retrieval
+- `AlertModel` - 
 
 ## Validation Rules
 To ensure data integrity and prevent invalid inputs, the following validation rules are enforced in the application.
@@ -168,3 +171,6 @@ npm test
 MenuItemModel.test.js
 - Example:
 const item = new MenuItemModel("Burger", 8.99);
+### CI
+- GitHub Actions runs the test suite automatically on every pull request.
+- PRs cannot be merged if any test fails, ensuring system stability and reliability.
