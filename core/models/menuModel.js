@@ -4,7 +4,7 @@ class Menu {
         this.restaurant = restaurant
     }
     // Add a new menu item
-    addItem(menuItem) {
+    addMenuItem(menuItem) {
         if (menuItem instanceof MenuItemModel) {
             this.items.push(menuItem);
         } else {
@@ -12,7 +12,7 @@ class Menu {
         }
     }
     // Remove item by name
-    removeItemByName(name) {
+    removeMenuItem(name) {
         this.items = this.items.filter(item => item.getName() !== name);
     }
     // Get all menu items
