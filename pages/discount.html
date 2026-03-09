@@ -14,48 +14,46 @@
     <div class="card shadow-xl border-0 rounded-lg overflow-hidden bg-white">
         <div class="text-center p-4 border-b">
             <div class="mascot-logo mb-2 text-navy">🖩</div>
-            <h2 class="text-navy font-bold text-2xl uppercase tracking-tight">ForceFoodGood Checkout</h2>
-            <p class="text-gray-500">Polymorphic Discount Engine</p>
+            <h2 class="text-navy font-bold text-2xl uppercase">ForceFoodGood Checkout</h2>
         </div>
 
         <div class="row g-0">
             <div class="col-md-6 p-4 border-e">
-                <h3 class="text-navy font-bold text-lg mb-3">1. Add Items</h3>
+                <h3 class="text-navy font-bold text-lg mb-3">1. Add Your Items</h3>
                 <div class="flex flex-col gap-2 mb-4">
-                    <button class="btn btn-navy py-2 font-bold" onclick="addItem('Burger', 12.00)">Add Burger ($12.00)</button>
-                    <button class="btn btn-outline-primary border-navy text-navy font-semibold" onclick="addItem('Fries', 4.50)">Add Fries ($4.50)</button>
-                    <button class="btn btn-sm btn-link text-gray-400 mt-2" onclick="resetCart()">Clear Cart</button>
+                    <button class="btn btn-navy py-2 font-bold" onclick="handleAddItem('Burger', 12.00)">Add Burger ($12.00)</button>
+                    <button class="btn btn-outline-primary border-navy text-navy font-semibold" onclick="handleAddItem('Fries', 4.50)">Add Fries ($4.50)</button>
+                    <button class="btn btn-sm btn-link text-gray-400 mt-2" onclick="handleReset()">Reset Everything</button>
                 </div>
                 
                 <div class="bg-gray-50 p-3 rounded border">
-                    <h6 class="font-bold text-navy">Items: <span id="count" class="badge bg-navy">0</span></h6>
+                    <h6 class="font-bold text-navy">Cart Count: <span id="count" class="badge bg-navy">0</span></h6>
                     <ul id="display-list" class="text-sm mt-2 text-gray-600 list-none p-0">
-                        <li>Cart empty</li>
+                        <li>Cart is empty</li>
                     </ul>
                 </div>
             </div>
 
             <div class="col-md-6 p-4 bg-gray-50">
-                <h3 class="text-navy font-bold text-lg mb-3">2. Select Strategy</h3>
-                
+                <h3 class="text-navy font-bold text-lg mb-3">2. Choose Discount</h3>
                 <div class="mb-4">
-                    <select id="strategy-select" class="form-select border-navy shadow-sm">
+                    <select id="strategy-select" class="form-select border-navy">
                         <option value="none">No Discount</option>
-                        <option value="percent">PercentageDiscount (20%)</option>
-                        <option value="flat">FlatDiscount ($5.00)</option>
+                        <option value="percent">Percentage (20% Off)</option>
+                        <option value="flat">Flat ($5.00 Off)</option>
                         <option value="conditional">Conditional ($10 Off / 3+ Items)</option>
                     </select>
                 </div>
 
-                <button class="btn btn-navy w-100 py-3 font-bold uppercase tracking-widest shadow-md" onclick="runStrategy()">
-                    Apply & Calculate
+                <button class="btn btn-navy w-100 py-3 font-bold uppercase shadow-md" onclick="handleApply()">
+                    Apply Discount & Calculate
                 </button>
 
-                <div id="results" class="mt-4 p-3 bg-white border rounded d-none">
-                    <div class="flex justify-between text-sm"><span class="text-gray-400">Subtotal:</span> <span id="sub">$0.00</span></div>
+                <div id="results" class="mt-4 p-3 bg-white border rounded hidden">
+                    <div class="flex justify-between text-sm"><span>Subtotal:</span> <span id="sub">$0.00</span></div>
                     <div class="flex justify-between text-sm text-red-500"><span>Discount:</span> <span id="disc">-$0.00</span></div>
-                    <div class="flex justify-between mt-2 pt-2 border-t font-bold text-navy uppercase text-lg">
-                        <span>Final:</span> <span id="total">$0.00</span>
+                    <div class="flex justify-between mt-2 pt-2 border-t font-bold text-navy text-lg">
+                        <span>Final Total:</span> <span id="total">$0.00</span>
                     </div>
                 </div>
             </div>
@@ -64,55 +62,56 @@
 </div>
 
 <script type="module">
+    // IMPORTANT: Check that these file names match your folder EXACTLY
     import Cart from './Cart.js';
     import { PercentageDiscount, FlatDiscount, ConditionalDiscount } from './DiscountStrategy.js';
 
-    const cartInstance = new Cart();
+    const cart = new Cart();
 
-    // Global listeners for HTML buttons
-    window.addItem = (name, price) => {
-        cartInstance.addItem(name, price, 1);
-        updateView();
+    // Mapping internal logic to global window functions so HTML buttons can "see" them
+    window.handleAddItem = (name, price) => {
+        cart.addItem(name, price, 1);
+        updateUI();
     };
 
-    window.resetCart = () => {
-        cartInstance.items = [];
-        document.getElementById('results').classList.add('d-none');
-        updateView();
+    window.handleReset = () => {
+        cart.items = [];
+        document.getElementById('results').classList.add('hidden');
+        updateUI();
     };
 
-    function updateView() {
+    function updateUI() {
         const list = document.getElementById('display-list');
-        const count = document.getElementById('count');
-        count.innerText = cartInstance.items.reduce((acc, i) => acc + i.quantity, 0);
-        list.innerHTML = cartInstance.items.length 
-            ? cartInstance.items.map(i => `<li>${i.name} (x${i.quantity})</li>`).join('')
-            : "<li>Cart empty</li>";
+        const countBadge = document.getElementById('count');
+        
+        const totalItems = cart.items.reduce((acc, i) => acc + i.quantity, 0);
+        countBadge.innerText = totalItems;
+        
+        list.innerHTML = cart.items.length 
+            ? cart.items.map(i => `<li class="border-b py-1">${i.name} x ${i.quantity}</li>`).join('')
+            : "<li>Cart is empty</li>";
     }
 
-    window.runStrategy = () => {
+    window.handleApply = () => {
         const choice = document.getElementById('strategy-select').value;
-        let strategyObj;
+        let strategy;
 
-        // Implementation of Polymorphism:
-        // Different classes are instantiated, but all use the .apply(cart) method.
-        if (choice === 'percent') strategyObj = new PercentageDiscount(20);
-        else if (choice === 'flat') strategyObj = new FlatDiscount(5);
-        else if (choice === 'conditional') strategyObj = new ConditionalDiscount(3, 10);
-        else strategyObj = null;
+        // Polymorphism: instantiate the correct class
+        if (choice === 'percent') strategy = new PercentageDiscount(20);
+        else if (choice === 'flat') strategy = new FlatDiscount(5);
+        else if (choice === 'conditional') strategy = new ConditionalDiscount(3, 10);
+        else strategy = null;
 
-        const subtotal = parseFloat(cartInstance.calculateTotal());
-        const discountVal = strategyObj ? strategyObj.apply(cartInstance) : 0;
-        const final = (subtotal - discountVal).toFixed(2);
+        const subtotal = parseFloat(cart.calculateTotal());
+        const discount = strategy ? strategy.apply(cart) : 0;
+        const final = (subtotal - discount).toFixed(2);
 
-        // Update display
         const resDiv = document.getElementById('results');
-        resDiv.classList.remove('d-none');
+        resDiv.classList.remove('hidden');
         document.getElementById('sub').innerText = `$${subtotal.toFixed(2)}`;
-        document.getElementById('disc').innerText = `-$${discountVal.toFixed(2)}`;
+        document.getElementById('disc').innerText = `-$${discount.toFixed(2)}`;
         document.getElementById('total').innerText = `$${final}`;
     };
 </script>
-
 </body>
 </html>
