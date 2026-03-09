@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart | ForceFoodGood</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+
+<div class="container max-w-4xl">
+    <div class="card shadow-xl border-0 rounded-lg overflow-hidden bg-white">
+        <div class="text-center p-4 border-b">
+            <div class="mascot-logo mb-2 text-navy">🖩</div>
+            <h2 class="text-navy font-bold text-2xl uppercase tracking-tight">ForceFoodGood Checkout</h2>
+            <p class="text-gray-500">Polymorphic Discount Engine</p>
+        </div>
+
+        <div class="row g-0">
+            <div class="col-md-6 p-4 border-e">
+                <h3 class="text-navy font-bold text-lg mb-3">1. Add Items</h3>
+                <div class="flex flex-col gap-2 mb-4">
+                    <button class="btn btn-navy py-2 font-bold" onclick="addItem('Burger', 12.00)">Add Burger ($12.00)</button>
+                    <button class="btn btn-outline-primary border-navy text-navy font-semibold" onclick="addItem('Fries', 4.50)">Add Fries ($4.50)</button>
+                    <button class="btn btn-sm btn-link text-gray-400 mt-2" onclick="resetCart()">Clear Cart</button>
+                </div>
+                
+                <div class="bg-gray-50 p-3 rounded border">
+                    <h6 class="font-bold text-navy">Items: <span id="count" class="badge bg-navy">0</span></h6>
+                    <ul id="display-list" class="text-sm mt-2 text-gray-600 list-none p-0">
+                        <li>Cart empty</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-6 p-4 bg-gray-50">
+                <h3 class="text-navy font-bold text-lg mb-3">2. Select Strategy</h3>
+                
+                <div class="mb-4">
+                    <select id="strategy-select" class="form-select border-navy shadow-sm">
+                        <option value="none">No Discount</option>
+                        <option value="percent">PercentageDiscount (20%)</option>
+                        <option value="flat">FlatDiscount ($5.00)</option>
+                        <option value="conditional">Conditional ($10 Off / 3+ Items)</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-navy w-100 py-3 font-bold uppercase tracking-widest shadow-md" onclick="runStrategy()">
+                    Apply & Calculate
+                </button>
+
+                <div id="results" class="mt-4 p-3 bg-white border rounded d-none">
+                    <div class="flex justify-between text-sm"><span class="text-gray-400">Subtotal:</span> <span id="sub">$0.00</span></div>
+                    <div class="flex justify-between text-sm text-red-500"><span>Discount:</span> <span id="disc">-$0.00</span></div>
+                    <div class="flex justify-between mt-2 pt-2 border-t font-bold text-navy uppercase text-lg">
+                        <span>Final:</span> <span id="total">$0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import Cart from './Cart.js';
+    import { PercentageDiscount, FlatDiscount, ConditionalDiscount } from './DiscountStrategy.js';
+
+    const cartInstance = new Cart();
+
+    // Global listeners for HTML buttons
+    window.addItem = (name, price) => {
+        cartInstance.addItem(name, price, 1);
+        updateView();
+    };
+
+    window.resetCart = () => {
+        cartInstance.items = [];
+        document.getElementById('results').classList.add('d-none');
+        updateView();
+    };
+
+    function updateView() {
+        const list = document.getElementById('display-list');
+        const count = document.getElementById('count');
+        count.innerText = cartInstance.items.reduce((acc, i) => acc + i.quantity, 0);
+        list.innerHTML = cartInstance.items.length 
+            ? cartInstance.items.map(i => `<li>${i.name} (x${i.quantity})</li>`).join('')
+            : "<li>Cart empty</li>";
+    }
+
+    window.runStrategy = () => {
+        const choice = document.getElementById('strategy-select').value;
+        let strategyObj;
+
+        // Implementation of Polymorphism:
+        // Different classes are instantiated, but all use the .apply(cart) method.
+        if (choice === 'percent') strategyObj = new PercentageDiscount(20);
+        else if (choice === 'flat') strategyObj = new FlatDiscount(5);
+        else if (choice === 'conditional') strategyObj = new ConditionalDiscount(3, 10);
+        else strategyObj = null;
+
+        const subtotal = parseFloat(cartInstance.calculateTotal());
+        const discountVal = strategyObj ? strategyObj.apply(cartInstance) : 0;
+        const final = (subtotal - discountVal).toFixed(2);
+
+        // Update display
+        const resDiv = document.getElementById('results');
+        resDiv.classList.remove('d-none');
+        document.getElementById('sub').innerText = `$${subtotal.toFixed(2)}`;
+        document.getElementById('disc').innerText = `-$${discountVal.toFixed(2)}`;
+        document.getElementById('total').innerText = `$${final}`;
+    };
+</script>
+
+</body>
+</html>
