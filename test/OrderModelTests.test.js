@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import OrderModel from "core/models/orders/orderModel.js"
+import OrderModel from "../core/models/orders/OrderModel.js"
 
 describe('OrderModel', () => {
     const order1 = new OrderModel("Pascal",null,1);

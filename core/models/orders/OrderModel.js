@@ -9,12 +9,13 @@ class OrderModel {
                 restaurant,
                 id) {
         this.username = username;
-        this.address = address;
         this.restaurant = restaurant;
         this.totalCost = 0;
         this.itemsOrdered = [];
         this.totalItems = this.itemsOrdered.length;
         this.id = id
+        this.subtotal = 0;
+        this.taxTotal = 0;
     }
 
 
