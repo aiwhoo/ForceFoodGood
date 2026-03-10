@@ -3,7 +3,7 @@ import {
     PercentageDiscount, 
     FlatDiscount, 
     ConditionalDiscount 
-} from "../core/models/discountModel.js";';
+} from "../core/models/discountModel.js";
 
 // Mirroring the Cart structure because I can't change the original class, that is someone else's issue
 // To ensures our tests focus strictly on the Discount logic.
