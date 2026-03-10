@@ -4,7 +4,7 @@ import Cart from './cartModel.js';
  * Parent Class: DiscountStrategy
  * Description: Base class for different discount calculation methods.
  */
-class DiscountStrategy {
+export class DiscountStrategy {
     /**
      * parameter {Cart} cart - An instance of the Cart class.
      */
