@@ -26,7 +26,7 @@ it('should throw an error when calling apply from the base class', () => {
     const mockCart = { calculateTotal: () => "100.00", items: [] };
     
     // We wrap the call in a function so Chai can "catch" the error
-    expect(() => baseStrategy.apply(mockCart)).to.throw("Method 'apply()' must be implemented.");
+    expect(() => baseStrategy.apply(mockCart)).to.throw("Invalid input: Expected an instance of Cart.");
 });
 
     /**
