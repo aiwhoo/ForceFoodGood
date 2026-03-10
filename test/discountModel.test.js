@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { 
+    DiscountStrategy,
     PercentageDiscount, 
     FlatDiscount, 
     ConditionalDiscount 
