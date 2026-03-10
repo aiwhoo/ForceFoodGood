@@ -20,13 +20,13 @@ describe('DiscountStrategy Suite', () => {
      * Validation: Checks if calling apply() on the base class throws an error like it should.
      * Stability: Important because it prevents developers from accidentally instantiating a logic-less base class for discount.
      */
-    it('should throw an error when calling apply from the base class', () => {
-        // We import the base class logic (not exported in previous snippet, 
-        // but often tested via an unimplemented subclass or direct reference)
-        const { DiscountStrategy } = require('./DiscountStrategy.js'); 
-        const base = new DiscountStrategy();
-        expect(() => base.apply(mockCart("100.00"))).to.throw("Method 'apply()' must be implemented");
-    });
+it('should throw an error when calling apply from the base class', () => {
+    const baseStrategy = new DiscountStrategy();
+    const mockCart = { calculateTotal: () => "100.00", items: [] };
+    
+    // We wrap the call in a function so Chai can "catch" the error
+    expect(() => baseStrategy.apply(mockCart)).to.throw("Method 'apply()' must be implemented.");
+});
 
     /**
      * Test Case 2: Validate Subclass Override (Percentage Logic)
