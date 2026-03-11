@@ -4,6 +4,7 @@ class MenuItemModel {
         this.price = price;
         this.description = description;
         this.category = category;
+        this.expired = Math.random() < 0.2;
     }
     getName() {
         return this.name;
@@ -17,6 +18,9 @@ class MenuItemModel {
     getCategory() {
         return this.category;
     }
+   isExpired() {
+       return this.expired;
+   }
 }
 
 export default MenuItemModel
