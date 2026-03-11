@@ -27,6 +27,7 @@ export class PercentageDiscount extends DiscountStrategy {
     }
 
     apply(cart) {
+         super.apply(cart)
         // Access the cart's total and convert from string to number
         const total = parseFloat(cart.calculateTotal());
         const discount = total * (this.percent / 100);
@@ -45,6 +46,7 @@ export class FlatDiscount extends DiscountStrategy {
     }
 
     apply(cart) {
+         super.apply(cart)
         const total = parseFloat(cart.calculateTotal());
         // Ensure discount doesn't exceed the total price
         const discount = Math.min(this.amount, total);
@@ -64,6 +66,7 @@ export class ConditionalDiscount extends DiscountStrategy {
     }
 
     apply(cart) {
+         super.apply(cart)
         // Calculate total quantity by looking directly at cart.items
         const totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
 
