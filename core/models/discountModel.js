@@ -6,14 +6,16 @@ export class DiscountStrategy {
      * @param {Object} cart - The cart object to validate.
      */
     apply(cart) {
-        // 1. VALIDATE INPUT FIRST
-        // This ensures the test gets the "Invalid input" error it expects
+        // 1. CHECK INPUT FIRST
+        // This satisfies the test at line 29 that expects the "Invalid input" error.
+        // If the cart is null or missing calculateTotal, it stops here.
         if (!cart || typeof cart.calculateTotal !== 'function') {
             throw new Error("Invalid input: Expected an instance of Cart.");
         }
 
-        // 2. CHECK FOR BASE CLASS SECOND
-        // This ensures the base class remains abstract
+        // 2. CHECK ABSTRACTION SECOND
+        // If the cart IS valid, but someone is trying to use the base class directly,
+        // then we throw the implementation error.
         if (this.constructor === DiscountStrategy) {
             throw new Error("Method 'apply()' must be implemented by subclass.");
         }
