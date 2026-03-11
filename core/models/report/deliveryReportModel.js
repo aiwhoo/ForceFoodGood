@@ -7,28 +7,27 @@ class DeliveryReportModel extends ReportModel {
 
     compute() {
         let totalTime = 0;
-        let count = this.data.length;
+        let validCount = 0;
         let lateCount = 0;
 
         for (const delivery of this.data) {
-            const expected = delivery.expectedMinutes;
-            const actual = delivery.actualMinutes;
-
-            // Add to total time
-            if (typeof actual === "number") {
-                totalTime += actual;
+            if (!delivery || typeof delivery.actualMinutes !== "number") {
+                continue; // ignore malformed deliveries
             }
 
-            // Late delivery check
-            if (typeof expected === "number" &&
-                typeof actual === "number" &&
-                actual > expected) {
+            const actual = delivery.actualMinutes;
+            const expected = delivery.expectedMinutes;
+
+            totalTime += actual;
+            validCount += 1;
+
+            if (typeof expected === "number" && actual > expected) {
                 lateCount += 1;
             }
         }
 
-        const averageDeliveryTime = count > 0
-            ? totalTime / count
+        const averageDeliveryTime = validCount > 0
+            ? totalTime / validCount
             : 0;
 
         return {
@@ -36,6 +35,7 @@ class DeliveryReportModel extends ReportModel {
             lateCount
         };
     }
+
 }
 
 export default DeliveryReportModel;
