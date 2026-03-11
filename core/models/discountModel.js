@@ -1,20 +1,23 @@
 /**
  * Parent Class: DiscountStrategy
- * Description: Serves as the base for the polymorphic discount system.
- * It handles shared logic (validation) to ensure subclasses receive clean data.
+ * Description: Base class for the strategy pattern.
+ * Provides centralized validation for all discount subclasses.
  */
 export class DiscountStrategy {
     /**
      * @param {Object} cart - The cart object to validate.
      */
     apply(cart) {
-        // Shared Validation: This runs for both Parent and Subclasses as requested in code review 
+        // 1. Validation Logic: This must come FIRST.
+        // It ensures the input exists and has the necessary calculateTotal method.
+        // This satisfies tests checking for 'Invalid input: Expected an instance of Cart.'
         if (!cart || typeof cart.calculateTotal !== 'function') {
             throw new Error("Invalid input: Expected an instance of Cart.");
         }
 
-        // The Logic Fix: Only throw the "Must be implemented" error if the caller is the base DiscountStrategy class itself.
-        // This allows the test to pass while letting subclasses use super.apply().
+        // 2. Base Class Restriction: This comes SECOND.
+        // Ensures that the base class cannot be used directly as a strategy.
+        // This satisfies tests checking that the base class throws 'Method must be implemented'.
         if (this.constructor === DiscountStrategy) {
             throw new Error("Method 'apply()' must be implemented by subclass.");
         }
@@ -23,7 +26,7 @@ export class DiscountStrategy {
 
 /**
  * Subclass: PercentageDiscount
- * Behavior: Applies a percentage-based reduction to the cart total.
+ * Behavior: Calculates a percentage of the cart total.
  */
 export class PercentageDiscount extends DiscountStrategy {
     constructor(percent) {
@@ -31,26 +34,21 @@ export class PercentageDiscount extends DiscountStrategy {
         this.percent = percent;
     }
 
-    /**
-     * @param {Object} cart 
-     * @returns {number} The calculated discount amount.
-     */
     apply(cart) {
-        // Trigger parent validation logic (per code review suggestion)
+        // Calls parent validation. Passes the constructor check because 'this' is PercentageDiscount.
         super.apply(cart);
 
-        // Core logic: Total * (Percent / 100)
         const total = parseFloat(cart.calculateTotal());
         const discount = total * (this.percent / 100);
         
-        // return as number rounded to 2 decimal places
+        // Returns number rounded to 2 decimal places.
         return parseFloat(discount.toFixed(2));
     }
 }
 
 /**
  * Subclass: FlatDiscount
- * Behavior: Subtracts a fixed dollar amount from the cart total.
+ * Behavior: Subtracts a fixed dollar amount from the total.
  */
 export class FlatDiscount extends DiscountStrategy {
     constructor(amount) {
@@ -64,8 +62,7 @@ export class FlatDiscount extends DiscountStrategy {
 
         const total = parseFloat(cart.calculateTotal());
         
-        // Edge Case: Use Math.min to ensure discount doesn't exceed the total price.
-        // This prevents the final total from becoming a negative number.
+        // Ensure discount doesn't exceed the total price.
         const discount = Math.min(this.amount, total);
         return parseFloat(discount.toFixed(2));
     }
@@ -73,7 +70,7 @@ export class FlatDiscount extends DiscountStrategy {
 
 /**
  * Subclass: ConditionalDiscount
- * Behavior: Applies a flat discount only if a quantity threshold is met.
+ * Behavior: Applies a discount only if a quantity threshold is met.
  */
 export class ConditionalDiscount extends DiscountStrategy {
     constructor(thresholdQuantity, discountAmount) {
@@ -86,15 +83,13 @@ export class ConditionalDiscount extends DiscountStrategy {
         // Trigger parent validation logic
         super.apply(cart);
 
-        // Calculate total quantity by summing the 'quantity' property of all items.
+        // Calculate total quantity by summing items.
         const totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
 
-        // Conditional Logic: Check if threshold is reached.
+        // Apply discount if criteria is met, otherwise return 0.
         if (totalQuantity >= this.threshold) {
             return parseFloat(this.discountAmount.toFixed(2));
         }
-        
-        // If criteria not met, no discount is applied.
         return 0;
     }
 }
