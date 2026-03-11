@@ -3,10 +3,6 @@ import RatingReportModel from "../../core/models/report/ratingReportModel.js";
 import RatingModel from "../../core/models/ratingsModel.js";
 
 describe("RatingReport", () => {
-
-    // ------------------------------------------------------------
-    // 1. BASE CLASS BEHAVIOR
-    // ------------------------------------------------------------
     it("calls validate(), preprocess(), compute(), and serialize() in generate()", () => {
         // this test ensures that all processing functions are called in the report
 
@@ -36,9 +32,6 @@ describe("RatingReport", () => {
         expect(serializeCalled).to.equal(true);
     });
 
-    // ------------------------------------------------------------
-    // 2. SUBCLASS OVERRIDE BEHAVIOR
-    // ------------------------------------------------------------
     it("correctly computes average rating, count, and distribution", () => {
         const r1 = new RatingModel(5, "anish", "2024-01-01");
         const r2 = new RatingModel(3, "kai", "2024-01-02");
@@ -62,10 +55,6 @@ describe("RatingReport", () => {
             5: 1
         });
     });
-
-    // ------------------------------------------------------------
-    // 3. EDGE CASES
-    // ------------------------------------------------------------
     it("returns zeros when no ratings exist", () => {
         // edge case for when there are no ratings, which can happen, and thus we would want to return 0
         const report = new RatingReportModel({
