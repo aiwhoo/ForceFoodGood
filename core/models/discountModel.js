@@ -6,15 +6,18 @@
 export class DiscountStrategy {
     /**
      * @param {Object} cart - The cart object to validate.
-     * Shared logic: Ensures the input is not null and has the required methods.
      */
     apply(cart) {
-        // Validation logic: This is what runs when subclasses call super.apply(cart)
+        // Shared Validation: This runs for both Parent and Subclasses as requested in code review 
         if (!cart || typeof cart.calculateTotal !== 'function') {
             throw new Error("Invalid input: Expected an instance of Cart.");
         }
-        // Note: We do not throw "Method not implemented" here anymore 
-        // to allow the 'super.apply' chain to complete without crashing.
+
+        // The Logic Fix: Only throw the "Must be implemented" error if the caller is the base DiscountStrategy class itself.
+        // This allows the test to pass while letting subclasses use super.apply().
+        if (this.constructor === DiscountStrategy) {
+            throw new Error("Method 'apply()' must be implemented by subclass.");
+        }
     }
 }
 
