@@ -8,19 +8,22 @@ class SalesReportModel extends ReportModel {
     compute() {
         // Compute total revenue and average order value
         let totalRevenue = 0;
-        let orderCount = this.data.length;
+        let validCount = 0;
 
         for (const order of this.data) {
-            // Safely read cost from OrderModel
+            // skip over poorly formed OrderModels
             const amount = typeof order.getCost === "function"
                 ? order.getCost()
-                : order.totalCost ?? 0;
+                : (typeof order.totalCost === "number" ? order.totalCost : null);
 
-            totalRevenue += amount;
+            if (typeof amount === "number") {
+                totalRevenue += amount;
+                validCount += 1;
+            }
         }
 
-        const averageOrderValue = orderCount > 0
-            ? totalRevenue / orderCount
+        const averageOrderValue = validCount > 0
+            ? totalRevenue / validCount
             : 0;
 
         return {
