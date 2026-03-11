@@ -1,24 +1,29 @@
-import Cart from './cartModel.js';
-
 /**
  * Parent Class: DiscountStrategy
- * Description: Base class for different discount calculation methods.
+ * Description: Base class for the strategy pattern.
  */
 export class DiscountStrategy {
     /**
-     * parameter {Cart} cart - An instance of the Cart class.
+     * @param {Object} cart - The cart object to validate.
      */
     apply(cart) {
-        if (!(cart instanceof Cart)) {
+        // 1. DUCK TYING VALIDATION: 
+        // This checks if the cart exists and has the necessary method.
+        // This passes for both real Cart instances and Mock objects used in tests.
+        if (!cart || typeof cart.calculateTotal !== 'function') {
             throw new Error("Invalid input: Expected an instance of Cart.");
         }
-        throw new Error("Method 'apply()' must be implemented by subclass.");
+
+        // 2. ABSTRACTION PROTECTION:
+        // Only throw "must be implemented" if the base class is called directly.
+        if (this.constructor === DiscountStrategy) {
+            throw new Error("Method 'apply()' must be implemented by subclass.");
+        }
     }
 }
 
 /**
  * Subclass: PercentageDiscount
- * Behavior: Calculates a percentage of the cart total.
  */
 export class PercentageDiscount extends DiscountStrategy {
     constructor(percent) {
@@ -27,8 +32,9 @@ export class PercentageDiscount extends DiscountStrategy {
     }
 
     apply(cart) {
-         super.apply(cart)
-        // Access the cart's total and convert from string to number
+        // Runs parent validation, but constructor check passes because 'this' is a subclass.
+        super.apply(cart);
+
         const total = parseFloat(cart.calculateTotal());
         const discount = total * (this.percent / 100);
         return parseFloat(discount.toFixed(2));
@@ -37,7 +43,6 @@ export class PercentageDiscount extends DiscountStrategy {
 
 /**
  * Subclass: FlatDiscount
- * Behavior: Subtracts a fixed dollar amount from the total.
  */
 export class FlatDiscount extends DiscountStrategy {
     constructor(amount) {
@@ -46,9 +51,9 @@ export class FlatDiscount extends DiscountStrategy {
     }
 
     apply(cart) {
-         super.apply(cart)
+        super.apply(cart);
+
         const total = parseFloat(cart.calculateTotal());
-        // Ensure discount doesn't exceed the total price
         const discount = Math.min(this.amount, total);
         return parseFloat(discount.toFixed(2));
     }
@@ -56,7 +61,6 @@ export class FlatDiscount extends DiscountStrategy {
 
 /**
  * Subclass: ConditionalDiscount
- * Behavior: Applies a discount only if a specific item count is reached.
  */
 export class ConditionalDiscount extends DiscountStrategy {
     constructor(thresholdQuantity, discountAmount) {
@@ -66,8 +70,9 @@ export class ConditionalDiscount extends DiscountStrategy {
     }
 
     apply(cart) {
-         super.apply(cart)
-        // Calculate total quantity by looking directly at cart.items
+        super.apply(cart);
+
+        // Accessing cart.items directly for the conditional logic
         const totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
 
         if (totalQuantity >= this.threshold) {
