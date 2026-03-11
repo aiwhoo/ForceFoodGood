@@ -1,33 +1,24 @@
+import Cart from './cartModel.js';
+
 /**
  * Parent Class: DiscountStrategy
- */
-/**
- * Parent Class: DiscountStrategy
- * Description: Base class for the strategy pattern.
+ * Description: Base class for different discount calculation methods.
  */
 export class DiscountStrategy {
     /**
-     * @param {Object} cart - The cart object to validate.
+     * parameter {Cart} cart - An instance of the Cart class.
      */
     apply(cart) {
-        // 1. VALIDATE DATA FIRST
-        // This satisfies the test at line 29. Even in the base class, 
-        // if the input is bad, we must throw the "Invalid input" error first.
-        if (!cart || typeof cart.calculateTotal !== 'function') {
+        if (!(cart instanceof Cart)) {
             throw new Error("Invalid input: Expected an instance of Cart.");
         }
-
-        // 2. VALIDATE ARCHITECTURE SECOND
-        // If the data is fine, but we are still in the base class, 
-        // THEN throw the implementation error.
-        if (this.constructor === DiscountStrategy) {
-            throw new Error("Method 'apply()' must be implemented by subclass.");
-        }
+        throw new Error("Method 'apply()' must be implemented by subclass.");
     }
 }
 
 /**
  * Subclass: PercentageDiscount
+ * Behavior: Calculates a percentage of the cart total.
  */
 export class PercentageDiscount extends DiscountStrategy {
     constructor(percent) {
@@ -36,32 +27,7 @@ export class PercentageDiscount extends DiscountStrategy {
     }
 
     apply(cart) {
-        // Calls the parent apply(). 
-        // It passes Step 1 (validation) and skips Step 2 (because it's a subclass).
-        super.apply(cart);
-
-        const total = parseFloat(cart.calculateTotal());
-        const discount = total * (this.percent / 100);
-        return parseFloat(discount.toFixed(2));
-    }
-}
-
-// ... Keep FlatDiscount and ConditionalDiscount exactly as they were ...
-
-/**
- * Subclass: PercentageDiscount
- */
-export class PercentageDiscount extends DiscountStrategy {
-    constructor(percent) {
-        super();
-        this.percent = percent;
-    }
-
-    apply(cart) {
-        // Calls parent validation (Step 1)
-        // Passes the constructor check (Step 2) because this.constructor is PercentageDiscount
-        super.apply(cart);
-
+        // Access the cart's total and convert from string to number
         const total = parseFloat(cart.calculateTotal());
         const discount = total * (this.percent / 100);
         return parseFloat(discount.toFixed(2));
@@ -70,6 +36,7 @@ export class PercentageDiscount extends DiscountStrategy {
 
 /**
  * Subclass: FlatDiscount
+ * Behavior: Subtracts a fixed dollar amount from the total.
  */
 export class FlatDiscount extends DiscountStrategy {
     constructor(amount) {
@@ -78,8 +45,8 @@ export class FlatDiscount extends DiscountStrategy {
     }
 
     apply(cart) {
-        super.apply(cart);
         const total = parseFloat(cart.calculateTotal());
+        // Ensure discount doesn't exceed the total price
         const discount = Math.min(this.amount, total);
         return parseFloat(discount.toFixed(2));
     }
@@ -87,6 +54,7 @@ export class FlatDiscount extends DiscountStrategy {
 
 /**
  * Subclass: ConditionalDiscount
+ * Behavior: Applies a discount only if a specific item count is reached.
  */
 export class ConditionalDiscount extends DiscountStrategy {
     constructor(thresholdQuantity, discountAmount) {
@@ -96,7 +64,7 @@ export class ConditionalDiscount extends DiscountStrategy {
     }
 
     apply(cart) {
-        super.apply(cart);
+        // Calculate total quantity by looking directly at cart.items
         const totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
 
         if (totalQuantity >= this.threshold) {
