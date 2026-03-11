@@ -1,148 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart | ForceFoodGood</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .text-navy { color: #001f3f; }
-        .bg-navy { background-color: #001f3f; color: white; }
-        .btn-navy { background-color: #001f3f; color: white; border: none; }
-        .btn-navy:hover { background-color: #003366; color: white; }
-        .border-navy { border-color: #001f3f; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Discount Strategy Demo | ForceFoodGood</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="stylesheet" href="styles.css">
 </head>
-<body class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
 
-<div class="container max-w-4xl">
-    <div class="card shadow-xl border-0 rounded-lg overflow-hidden bg-white">
-        <div class="text-center p-4 border-b">
-            <div class="mascot-logo mb-2 text-navy" style="font-size: 2rem;">🖩</div>
-            <h2 class="text-navy font-bold text-2xl uppercase">ForceFoodGood Checkout</h2>
-        </div>
+<body class="h-screen flex items-center justify-center">
 
-        <div class="row g-0">
-            <div class="col-md-6 p-4 border-e">
-                <h3 class="text-navy font-bold text-lg mb-3">1. Add Your Items</h3>
-                <div class="flex flex-col gap-2 mb-4">
-                    <button id="add-burger" class="btn btn-navy py-2 font-bold">Add Burger ($12.00)</button>
-                    <button id="add-fries" class="btn btn-outline-primary border-navy text-navy font-semibold">Add Fries ($4.50)</button>
-                    <button id="reset-btn" class="btn btn-sm btn-link text-gray-400 mt-2">Reset Everything</button>
-                </div>
-                
-                <div class="bg-gray-50 p-3 rounded border">
-                    <h6 class="font-bold text-navy">Cart Count: <span id="count" class="badge bg-navy">0</span></h6>
-                    <ul id="display-list" class="text-sm mt-2 text-gray-600 list-none p-0">
-                        <li>Cart is empty</li>
-                    </ul>
-                </div>
-            </div>
+<div class="container max-w-lg">
 
-            <div class="col-md-6 p-4 bg-gray-50">
-                <h3 class="text-navy font-bold text-lg mb-3">2. Choose Discount</h3>
-                <div class="mb-4">
-                    <select id="strategy-select" class="form-select border-navy">
-                        <option value="none">No Discount</option>
-                        <option value="percent">Percentage (20% Off)</option>
-                        <option value="flat">Flat ($5.00 Off)</option>
-                        <option value="conditional">Conditional ($10 Off / 3+ Items)</option>
-                    </select>
-                </div>
+<div class="card shadow-xl border-0 rounded-lg p-4 bg-white">
 
-                <button id="apply-btn" class="btn btn-navy w-100 py-3 font-bold uppercase shadow-md">
-                    Apply Discount & Calculate
-                </button>
+<div class="text-center mb-4">
+<div class="mascot-logo mb-2">💸</div>
+<h2 class="text-navy font-bold text-2xl">Discount Strategy Demo</h2>
+<p class="text-gray-500">Polymorphism in action</p>
+</div>
 
-                <div id="results" class="mt-4 p-3 bg-white border rounded hidden">
-                    <div class="flex justify-between text-sm"><span>Subtotal:</span> <span id="sub">$0.00</span></div>
-                    <div class="flex justify-between text-sm text-red-500"><span>Discount:</span> <span id="disc">-$0.00</span></div>
-                    <div class="flex justify-between mt-2 pt-2 border-t font-bold text-navy text-lg">
-                        <span>Final Total:</span> <span id="total">$0.00</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- ADD ITEM -->
+<div class="mb-3">
+<label class="form-label font-semibold text-navy">Item Name</label>
+<input type="text" id="itemName" class="form-control" placeholder="Burger">
+</div>
+
+<div class="mb-3">
+<label class="form-label font-semibold text-navy">Price</label>
+<input type="number" id="itemPrice" class="form-control" placeholder="10">
+</div>
+
+<div class="mb-3">
+<label class="form-label font-semibold text-navy">Quantity</label>
+<input type="number" id="itemQty" class="form-control" value="1">
+</div>
+
+<button id="addItemBtn" class="btn btn-navy w-100 mb-4">Add Item</button>
+
+<hr>
+
+<!-- SELECT DISCOUNT -->
+<div class="mb-3">
+<label class="form-label font-semibold text-navy">Select Discount Type</label>
+<select id="discountType" class="form-select">
+<option value="percentage">10% Percentage Discount</option>
+<option value="flat">$5 Flat Discount</option>
+<option value="conditional">Conditional (3+ items = $8 off)</option>
+</select>
+</div>
+
+<button id="applyDiscountBtn" class="btn btn-navy w-100 mb-3">Apply Discount</button>
+
+<hr>
+
+<!-- OUTPUT -->
+<div class="text-center mt-3">
+
+<p class="text-lg">
+<strong>Cart Total:</strong>
+<span id="cartTotal">$0.00</span>
+</p>
+
+<p class="text-lg">
+<strong>Discount:</strong>
+<span id="discountAmount">$0.00</span>
+</p>
+
+<p class="text-lg font-bold">
+<strong>Final Total:</strong>
+<span id="finalTotal">$0.00</span>
+</p>
+
+</div>
+
+</div>
 </div>
 
 <script type="module">
-    // 1. Imports (Adjust paths if your local folder structure is different)
-    import Cart from "../core/models/cartModel.js"; 
-    import { 
-        DiscountStrategy,
-        PercentageDiscount, 
-        FlatDiscount, 
-        ConditionalDiscount 
-    } from "../core/models/discountModel.js";
 
-    // 2. Initialize the Cart
-    const cart = new Cart();
+import Cart from './cartModel.js'
+import { PercentageDiscount, FlatDiscount, ConditionalDiscount } from './discountStrategy.js'
 
-    // 3. UI Element References
-    const listDisplay = document.getElementById('display-list');
-    const countBadge = document.getElementById('count');
-    const resultsDiv = document.getElementById('results');
+const cart = new Cart()
 
-    // 4. Core UI Logic
-    function updateUI() {
-        const totalItems = cart.items.reduce((acc, i) => acc + i.quantity, 0);
-        countBadge.innerText = totalItems;
-        
-        listDisplay.innerHTML = cart.items.length 
-            ? cart.items.map(i => `<li class="border-b py-1">${i.name} x ${i.quantity}</li>`).join('')
-            : "<li>Cart is empty</li>";
-    }
+const itemName = document.getElementById("itemName")
+const itemPrice = document.getElementById("itemPrice")
+const itemQty = document.getElementById("itemQty")
 
-    // 5. Event Listeners (Replacing the failing 'onclick' attributes)
-    document.getElementById('add-burger').addEventListener('click', () => {
-        cart.addItem('Burger', 12.00, 1);
-        updateUI();
-    });
+const cartTotal = document.getElementById("cartTotal")
+const discountAmount = document.getElementById("discountAmount")
+const finalTotal = document.getElementById("finalTotal")
 
-    document.getElementById('add-fries').addEventListener('click', () => {
-        cart.addItem('Fries', 4.50, 1);
-        updateUI();
-    });
+// ADD ITEM
+document.getElementById("addItemBtn").addEventListener("click", () => {
 
-    document.getElementById('reset-btn').addEventListener('click', () => {
-        cart.items = [];
-        resultsDiv.classList.add('hidden');
-        updateUI();
-    });
+const name = itemName.value
+const price = parseFloat(itemPrice.value)
+const qty = parseInt(itemQty.value)
 
-    document.getElementById('apply-btn').addEventListener('click', () => {
-        const choice = document.getElementById('strategy-select').value;
-        let strategy;
+cart.addItem(name, price, qty)
 
-        // Polymorphism: Instantiating the correct subclass
-        if (choice === 'percent') strategy = new PercentageDiscount(20);
-        else if (choice === 'flat') strategy = new FlatDiscount(5);
-        else if (choice === 'conditional') strategy = new ConditionalDiscount(3, 10);
-        else strategy = null;
+updateTotal()
 
-        const subtotal = parseFloat(cart.calculateTotal());
-        let discount = 0;
+})
 
-        if (strategy) {
-            try {
-                discount = strategy.apply(cart);
-            } catch (err) {
-                console.error("Discount Error:", err.message);
-                alert(err.message);
-                return;
-            }
-        }
+// APPLY DISCOUNT
+document.getElementById("applyDiscountBtn").addEventListener("click", () => {
 
-        const final = (subtotal - discount).toFixed(2);
+let strategy
 
-        // Update Results Display
-        resultsDiv.classList.remove('hidden');
-        document.getElementById('sub').innerText = `$${subtotal.toFixed(2)}`;
-        document.getElementById('disc').innerText = `-$${discount.toFixed(2)}`;
-        document.getElementById('total').innerText = `$${final}`;
-    });
+const type = document.getElementById("discountType").value
+
+// POLYMORPHISM
+if(type === "percentage"){
+strategy = new PercentageDiscount(10)
+}
+
+else if(type === "flat"){
+strategy = new FlatDiscount(5)
+}
+
+else if(type === "conditional"){
+strategy = new ConditionalDiscount(3, 8)
+}
+
+const discount = strategy.apply(cart)
+
+const total = parseFloat(cart.calculateTotal())
+
+const final = total - discount
+
+discountAmount.innerText = "$" + discount.toFixed(2)
+finalTotal.innerText = "$" + final.toFixed(2)
+
+})
+
+// UPDATE TOTAL
+function updateTotal(){
+const total = cart.calculateTotal()
+cartTotal.innerText = "$" + total
+}
+
 </script>
+
 </body>
 </html>
