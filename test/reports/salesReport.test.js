@@ -111,7 +111,7 @@ describe("SalesReport", () => {
         order.addMenuItem({ name: "Pizza", price: 10 });
 
         expect(() => {
-            new SalesReport({
+            new SalesReportModel({
                 data: [order],
                 dateRange: null,
                 options: {}
