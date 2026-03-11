@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="html">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>SalesReport Test</title>
 </head>
 <body>
+<h1>SalesReport Test</h1>
+<div id="output"></div>
 
+<script type="module">
+    import OrderModel from "../core/models/orderModel.js";
+    import SalesReportModel from "../core/models/report/salesReportModel.js";
+
+    // --- Test Data ---
+    const order1 = new OrderModel("alice", "123 Main St", "Pizza Place", "1");
+    order1.addMenuItem({ name: "Pizza", price: 12 });
+    order1.addMenuItem({ name: "Soda", price: 3 });
+
+    const order2 = new OrderModel("bob", "456 Oak St", "Burger Joint", "2");
+    order2.addMenuItem({ name: "Burger", price: 10 });
+    order2.addMenuItem({ name: "Fries", price: 4 });
+
+    // --- Run the report ---
+    const report = new SalesReportModel({
+        data: [order1, order2],
+        dateRange: { start: "2024-01-01", end: "2024-12-31" },
+        options: {}
+    });
+
+    const output = report.generate();
+
+    // --- Display result ---
+    document.getElementById("output").textContent =
+        JSON.stringify(output, null, 2);
+</script>
 </body>
 </html>

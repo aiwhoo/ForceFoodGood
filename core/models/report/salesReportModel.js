@@ -1,28 +1,44 @@
-class SalesReportModel extends ReportModel {
+import ReportModel from "./reportModel.js";
+
+class RatingReportModel extends ReportModel {
     constructor(params) {
         super(params); // { data, dateRange, options }
     }
+
     compute() {
-        let totalRevenue = 0;
-        let orderCount = this.data.length;
+        // Expecting this.data to be an array of RatingModel instances
+        // { stars: number, username: string, date: Date/string, review: string }
 
-        for (const order of this.data) {
-            // Use the model's getter to be safe
-            const amount = typeof order.getCost === "function"
-                ? order.getCost()
-                : order.totalCost ?? 0;
+        let total = 0;
+        let count = 0;
 
-            totalRevenue += amount;
+        // Histogram for 1–5 stars
+        const distribution = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0
+        };
+
+        for (const rating of this.data) {
+            const stars = rating.stars;
+
+            if (typeof stars === "number" && stars >= 1 && stars <= 5) {
+                total += stars;
+                count += 1;
+                distribution[stars] += 1;
+            }
         }
 
-        const averageOrderValue = orderCount > 0
-            ? totalRevenue / orderCount
-            : 0;
+        const averageRating = count > 0 ? total / count : 0;
 
         return {
-            totalRevenue,
-            averageOrderValue
+            averageRating,
+            ratingCount: count,
+            distribution
         };
     }
-
 }
+
+export default RatingReportModel;

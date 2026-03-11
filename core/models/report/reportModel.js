@@ -1,4 +1,4 @@
-class Report {
+class ReportModel {
     constructor({ data, dateRange, options = {} }) {
         this.data = data;
         this.dateRange = dateRange;
@@ -102,3 +102,5 @@ class Report {
     }
 
 }
+
+export default ReportModel;
