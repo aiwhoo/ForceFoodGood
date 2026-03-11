@@ -1,4 +1,4 @@
-export class Schedule {
+export class ScheduleModel {
     constructor(id) {
         this.id = id;
     }
@@ -9,7 +9,7 @@ export class Schedule {
 }
 
 //first subclass with the restaurant
-export class RestaurantSchedule extends Schedule {
+export class RestaurantSchedule extends ScheduleModel {
     constructor(id, openTime, closeTime) {
         super(id);
         this.openTime = openTime;
@@ -21,7 +21,7 @@ export class RestaurantSchedule extends Schedule {
 }
 
 // second subclass with the driver
-export class DriverSchedule extends Schedule {
+export class DriverSchedule extends ScheduleModel {
     constructor(id, shiftStart, shiftEnd) {
         super(id);
         this.shiftStart = shiftStart;
@@ -35,7 +35,7 @@ export class DriverSchedule extends Schedule {
 }
 
 // third subclass with the deliveryslot
-export class DeliverySlot extends Schedule {
+export class DeliverySlot extends ScheduleModel {
     constructor(id) {
         super(id);
         this.isBooked = false;

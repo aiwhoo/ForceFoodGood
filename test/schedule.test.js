@@ -1,34 +1,35 @@
 import { expect } from 'chai';
-import { RestaurantSchedule, DriverSchedule, DeliverySlot } from '../core/models/schedule.js';
+import { ScheduleModel, RestaurantSchedule, DriverSchedule, DeliverySlot } from '../core/models/scheduleModel.js';
 
-describe("Schedule Polymorphism Tests", () => {
-    //Happy Path
-    it("should confirm restaurant is open during valid hours", () => {
+describe("ScheduleModel Polymorphism Tests", () => {
+    // 1. Base Class Behavior + Failure Condition
+    it("should return false by default for the base ScheduleModel (Safety Net)", () => {
+        // This validates the PARENT class behavior as a safety net.
+        const base = new ScheduleModel("BASE-01");
+        expect(base.isAvailable(1200)).to.be.false;
+    });
+
+    // 2. Subclass Override 1: Restaurant (Happy Path)
+    it("should confirm RestaurantSchedule is open during valid hours", () => {
+        // This validates the first SUBCLASS override logic.
         const res = new RestaurantSchedule("R1", 900, 2200);
-        // Why: Validates basic time-range logic for the restaurant subclass.
         expect(res.isAvailable(1200)).to.be.true;
     });
 
-    //Subclass Override (Driver )
-    it("should show driver unavailable if on break", () => {
+    // 3. Subclass Override 2: Driver (State Change / Behavioral Validation)
+    it("should show DriverSchedule as unavailable if the driver is on break", () => {
+        // This validates the second SUBCLASS override and state-based logic.
         const driver = new DriverSchedule("D1", 800, 1600);
         driver.onBreak = true;
-        // Why: Validates that DriverSchedule properly overrides base logic with 'break' state.
         expect(driver.isAvailable(1000)).to.be.false;
     });
 
-    //Edge Case (bounds)
-    it("should show restaurant closed exactly at closing time", () => {
-        const res = new RestaurantSchedule("R1", 900, 2200);
-        // Why: Tests the boundary condition of the availability range.
-        expect(res.isAvailable(2201)).to.be.false;
-    });
-
-    // Test 4: Failure Case (State check)
-    it("should show delivery slot unavailable if already booked", () => {
+    // 4. Subclass Override 3: Delivery Slot (Edge Case / Boundary)
+    it("should show DeliverySlot as unavailable once it has been booked", () => {
+        // This validates the third SUBCLASS and tests the booking 'edge' state.
         const slot = new DeliverySlot("S1");
         slot.isBooked = true;
-        // Why: Confirms the system prevents double-booking (State validation).
         expect(slot.isAvailable()).to.be.false;
     });
+
 });

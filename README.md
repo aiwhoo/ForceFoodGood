@@ -91,6 +91,7 @@ This project demonstrates object-oriented programming in JavaScript, input valid
 - Checkout and order confirmation
 - Reviews with add/edit functionality
 - Documentation updates, including class summary and contribution guidelines
+- Polymorphic Scheduling System: A fully extensible hierarchy for managing store hours, driver shifts, and delivery bookings, including a responsive management UI built with Bootstrap.
 
 ---
 
@@ -127,6 +128,7 @@ The test results will display on the page.
 - `MenuItemModel` (if implemented) – Represents a menu item with name, price, description, and category.
 - `UserModel` (if implemented) - Represents a user with ID, name, and email.
 - `menuModel` - Stores and manages menu items, and allows for addition/removal/retrieval
+- `scheduleModel` - Base entity for handling timing and availability logic, includes 3 subclasses for restaurantSchedule, driverSchedule, and DeliverySlotModel.
 
 ## Validation Rules
 To ensure data integrity and prevent invalid inputs, the following validation rules are enforced in the application.
@@ -156,6 +158,12 @@ To ensure data integrity and prevent invalid inputs, the following validation ru
 ### Cart Validation
 - The cart cannot proceed to checkout if it is empty
 - After successful checkout, the cart is cleared
+
+### ScheduleModel Validation
+- **Time Formats:** Must be represented as 24-hour integers (0-2359) for arithmetic comparison.
+- **Logic Rules:**
+    - `DriverSchedule` availability must return `false` regardless of time if `onBreak` is true.
+    - `DeliverySlot` must return `false` if `isBooked` is true to prevent double-booking.
 ## Testing Guide
 
 ### How to run tests
