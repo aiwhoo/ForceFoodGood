@@ -1,38 +1,75 @@
 <!DOCTYPE html>
-<html lang="html">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SalesReport Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h1>SalesReport Test</h1>
-<div id="output"></div>
 
-<script type="module">
-    import OrderModel from "../../core/models/orderModel.js";
-    import SalesReportModel from "../../core/models/report/salesReportModel.js";
+<!-- Header / Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Reports</a>
 
-    // --- Test Data ---
-    const order1 = new OrderModel("alice", "123 Main St", "Pizza Place", "1");
-    order1.addMenuItem({ name: "Pizza", price: 12 });
-    order1.addMenuItem({ name: "Soda", price: 3 });
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    const order2 = new OrderModel("bob", "456 Oak St", "Burger Joint", "2");
-    order2.addMenuItem({ name: "Burger", price: 10 });
-    order2.addMenuItem({ name: "Fries", price: 4 });
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
 
-    // --- Run the report ---
-    const report = new SalesReportModel({
-        data: [order1, order2],
-        dateRange: { start: "2024-01-01", end: "2024-12-31" },
-        options: {}
-    });
+                <li class="nav-item">
+                    <button class="nav-link btn btn-link report-btn" data-target="sales-report">
+                        Sales Report
+                    </button>
+                </li>
 
-    const output = report.generate();
+                <li class="nav-item">
+                    <button class="nav-link btn btn-link report-btn" data-target="rating-report">
+                        Rating Report
+                    </button>
+                </li>
 
-    // --- Display result ---
-    document.getElementById("output").textContent =
-        JSON.stringify(output, null, 2);
-</script>
+                <li class="nav-item">
+                    <button class="nav-link btn btn-link report-btn" data-target="delivery-report">
+                        Delivery Report
+                    </button>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mt-4">
+
+    <!-- Sales Report -->
+    <div id="sales-report" class="report-section">
+        <h2>Sales Report</h2>
+        <pre id="sales-output" class="bg-light p-3 rounded"></pre>
+    </div>
+
+    <!-- Rating Report -->
+    <div id="rating-report" class="report-section d-none">
+        <h2>Rating Report</h2>
+        <pre id="rating-output" class="bg-light p-3 rounded"></pre>
+    </div>
+
+    <!-- Delivery Report -->
+    <div id="delivery-report" class="report-section d-none">
+        <h2>Delivery Report</h2>
+        <pre id="delivery-output" class="bg-light p-3 rounded"></pre>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="script.js"></script>
 </body>
 </html>
