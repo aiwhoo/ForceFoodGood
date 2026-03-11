@@ -1,0 +1,15 @@
+.report-section {
+    padding: 20px;
+    border-radius: 6px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+}
+
+pre {
+    white-space: pre-wrap;
+    font-size: 0.95rem;
+}
+
+.navbar {
+    background-color: #0E0E55 !important;
+}
