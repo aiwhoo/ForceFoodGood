@@ -1,24 +1,26 @@
-import Cart from './cartModel.js';
-
 /**
  * Parent Class: DiscountStrategy
- * Description: Base class for different discount calculation methods.
+ * Description: Serves as the base for the polymorphic discount system.
+ * It handles shared logic (validation) to ensure subclasses receive clean data.
  */
 export class DiscountStrategy {
     /**
-     * parameter {Cart} cart - An instance of the Cart class.
+     * @param {Object} cart - The cart object to validate.
+     * Shared logic: Ensures the input is not null and has the required methods.
      */
     apply(cart) {
-        if (!(cart instanceof Cart)) {
+        // Validation logic: This is what runs when subclasses call super.apply(cart)
+        if (!cart || typeof cart.calculateTotal !== 'function') {
             throw new Error("Invalid input: Expected an instance of Cart.");
         }
-        throw new Error("Method 'apply()' must be implemented by subclass.");
+        // Note: We do not throw "Method not implemented" here anymore 
+        // to allow the 'super.apply' chain to complete without crashing.
     }
 }
 
 /**
  * Subclass: PercentageDiscount
- * Behavior: Calculates a percentage of the cart total.
+ * Behavior: Applies a percentage-based reduction to the cart total.
  */
 export class PercentageDiscount extends DiscountStrategy {
     constructor(percent) {
@@ -26,18 +28,26 @@ export class PercentageDiscount extends DiscountStrategy {
         this.percent = percent;
     }
 
+    /**
+     * @param {Object} cart 
+     * @returns {number} The calculated discount amount.
+     */
     apply(cart) {
-         super.apply(cart)
-        // Access the cart's total and convert from string to number
+        // Trigger parent validation logic (per code review suggestion)
+        super.apply(cart);
+
+        // Core logic: Total * (Percent / 100)
         const total = parseFloat(cart.calculateTotal());
         const discount = total * (this.percent / 100);
+        
+        // return as number rounded to 2 decimal places
         return parseFloat(discount.toFixed(2));
     }
 }
 
 /**
  * Subclass: FlatDiscount
- * Behavior: Subtracts a fixed dollar amount from the total.
+ * Behavior: Subtracts a fixed dollar amount from the cart total.
  */
 export class FlatDiscount extends DiscountStrategy {
     constructor(amount) {
@@ -46,9 +56,13 @@ export class FlatDiscount extends DiscountStrategy {
     }
 
     apply(cart) {
-         super.apply(cart)
+        // Trigger parent validation logic
+        super.apply(cart);
+
         const total = parseFloat(cart.calculateTotal());
-        // Ensure discount doesn't exceed the total price
+        
+        // Edge Case: Use Math.min to ensure discount doesn't exceed the total price.
+        // This prevents the final total from becoming a negative number.
         const discount = Math.min(this.amount, total);
         return parseFloat(discount.toFixed(2));
     }
@@ -56,7 +70,7 @@ export class FlatDiscount extends DiscountStrategy {
 
 /**
  * Subclass: ConditionalDiscount
- * Behavior: Applies a discount only if a specific item count is reached.
+ * Behavior: Applies a flat discount only if a quantity threshold is met.
  */
 export class ConditionalDiscount extends DiscountStrategy {
     constructor(thresholdQuantity, discountAmount) {
@@ -66,13 +80,18 @@ export class ConditionalDiscount extends DiscountStrategy {
     }
 
     apply(cart) {
-         super.apply(cart)
-        // Calculate total quantity by looking directly at cart.items
+        // Trigger parent validation logic
+        super.apply(cart);
+
+        // Calculate total quantity by summing the 'quantity' property of all items.
         const totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
 
+        // Conditional Logic: Check if threshold is reached.
         if (totalQuantity >= this.threshold) {
             return parseFloat(this.discountAmount.toFixed(2));
         }
+        
+        // If criteria not met, no discount is applied.
         return 0;
     }
 }
