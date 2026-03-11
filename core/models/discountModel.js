@@ -1,26 +1,52 @@
 /**
  * Parent Class: DiscountStrategy
  */
+/**
+ * Parent Class: DiscountStrategy
+ * Description: Base class for the strategy pattern.
+ */
 export class DiscountStrategy {
     /**
      * @param {Object} cart - The cart object to validate.
      */
     apply(cart) {
-        // 1. CHECK INPUT FIRST
-        // This satisfies the test at line 29 that expects the "Invalid input" error.
-        // If the cart is null or missing calculateTotal, it stops here.
+        // 1. VALIDATE DATA FIRST
+        // This satisfies the test at line 29. Even in the base class, 
+        // if the input is bad, we must throw the "Invalid input" error first.
         if (!cart || typeof cart.calculateTotal !== 'function') {
             throw new Error("Invalid input: Expected an instance of Cart.");
         }
 
-        // 2. CHECK ABSTRACTION SECOND
-        // If the cart IS valid, but someone is trying to use the base class directly,
-        // then we throw the implementation error.
+        // 2. VALIDATE ARCHITECTURE SECOND
+        // If the data is fine, but we are still in the base class, 
+        // THEN throw the implementation error.
         if (this.constructor === DiscountStrategy) {
             throw new Error("Method 'apply()' must be implemented by subclass.");
         }
     }
 }
+
+/**
+ * Subclass: PercentageDiscount
+ */
+export class PercentageDiscount extends DiscountStrategy {
+    constructor(percent) {
+        super();
+        this.percent = percent;
+    }
+
+    apply(cart) {
+        // Calls the parent apply(). 
+        // It passes Step 1 (validation) and skips Step 2 (because it's a subclass).
+        super.apply(cart);
+
+        const total = parseFloat(cart.calculateTotal());
+        const discount = total * (this.percent / 100);
+        return parseFloat(discount.toFixed(2));
+    }
+}
+
+// ... Keep FlatDiscount and ConditionalDiscount exactly as they were ...
 
 /**
  * Subclass: PercentageDiscount
