@@ -34,6 +34,8 @@ describe("SalesReport", () => {
         expect(serializeCalled).to.equal(true);
     })
     it("correctly computes total revenue and average order value", () => {
+        // general report behavior
+
         // --- Create test orders ---
         const order1 = new OrderModel("anish", "address1", "five guy", "1");
         order1.addMenuItem({ name: "chili", price: 12 });
@@ -57,7 +59,7 @@ describe("SalesReport", () => {
         expect(output.result.averageOrderValue).to.equal(14.5); // 29 / 2
     });
     it("returns zeros when no orders exist", () => {
-        // edge case for when there are no orders, which can happen and thus we would want to return 0
+        // edge case for when there are no orders, which can happen, and thus we would want to return 0
         const report = new SalesReportModel({
             data: [],
             dateRange: { start: "2024-01-01", end: "2024-12-31" },
@@ -88,7 +90,7 @@ describe("SalesReport", () => {
         expect(output.result.averageOrderValue).to.equal(10);
     });
     it("safely ignores non-order objects", () => {
-        // if for some reason, an order cost isn't a number, our computations should ignore them
+        // if for some reason, an order cost is null, the report should ignore them
         const badOrder = null;
 
         const goodOrder = new OrderModel("anish", "address1", "five guy", "1");
