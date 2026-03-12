@@ -3,9 +3,8 @@ const { expect } = require("chai");
 const {
     Promotion,
     PercentagePromotion,
-    FlatPromotion,
-    BuyOneGetOne
-} = require("../core/models/promotionModel");
+    FlatPromotion
+} = require("../core/models/promotionModel.cjs");
 
 describe("Promotion Polymorphism Tests", () => {
     it("should throw an error when applyDiscount is called on the base Promotion class", () => {
