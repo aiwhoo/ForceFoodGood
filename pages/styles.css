@@ -1,0 +1,38 @@
+/* Custom properties for ForceFoodGood theme */
+:root {
+    --navy-blue: #000080;
+    --pure-white: #ffffff;
+    --light-gray: #f8f9fa;
+}
+
+body {
+    background-color: var(--light-gray);
+    color: var(--navy-blue);
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Custom utility classes to complement Tailwind/Bootstrap */
+.bg-navy {
+    background-color: var(--navy-blue) !important;
+}
+
+.text-navy {
+    color: var(--navy-blue) !important;
+}
+
+.btn-navy {
+    background-color: var(--navy-blue);
+    color: var(--pure-white);
+    border: none;
+}
+
+.btn-navy:hover {
+    background-color: #000066;
+    color: var(--pure-white);
+}
+
+/* Mascot sizing */
+.mascot-logo {
+    font-size: 2.5rem;
+    line-height: 1;
+}

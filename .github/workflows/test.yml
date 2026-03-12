@@ -1,0 +1,32 @@
+name: Node.js CI
+
+# This triggers the workflow on any push or pull request to the main branch
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    # This spins up a fresh Ubuntu Linux server hosted by GitHub
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step A: Check out your repository code onto the server
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step B: Install Node.js on the server
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # You can change this to match your local Node version
+
+      # Step C: Install your project dependencies (Mocha, Chai, etc.)
+      - name: Install dependencies
+        run: npm install
+
+      # Step D: Run your tests!
+      - name: Run Mocha tests
+        run: npm test

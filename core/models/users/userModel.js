@@ -9,6 +9,7 @@ class UserModel {
     getId() {
         return this.id;
     }
+
     getFirstName() {
         return this.firstName;
     }
@@ -29,3 +30,4 @@ class UserModel {
         return [this.firstName, this.lastName, this.email, this.isLoggedIn];
     }
 }
+export default UserModel;
