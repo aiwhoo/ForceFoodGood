@@ -16,6 +16,7 @@ class OrderModel {
         this.id = id
         this.subtotal = 0;
         this.taxTotal = 0;
+        this.lastModified = new Date().toISOString();
     }
 
 
@@ -53,6 +54,9 @@ class OrderModel {
     // generate summary of an order
     summary() {
         return `Order ${this.id} for ${this.username}`;
+    }
+    updateLastModified() {
+        this.lastModified = new Date().toISOString();
     }
 
 

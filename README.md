@@ -6,22 +6,17 @@ ForceFoodGood is a simple GrubHub-style food ordering app we made to practice ba
 
 ### What the project includes:
 
-* User class – stores user information and order history
-* Restaurant class – manages restaurant details and menus
-* MenuItem class – represents individual food items
-* Order class – keeps track of items ordered and calculates total cost
+* **User class** – stores user information and order history
+* **Restaurant class** – manages restaurant details and menus
+* **MenuItem class** – represents individual food items
+* **Order System** – A multi-stage order pipeline (Cart -> Confirmed -> Past)
 
 ### What we are learning:
 
-* How to use object-oriented programming (OOP)
-* How to organize backend logic
-* How food ordering systems work
+* How to use object-oriented programming (OOP) and inheritance
+* How to organize backend logic and state transitions
+* How to handle floating-point precision in financial calculations
 * How to use GitHub professionally (issues, branches, pull requests, code reviews)
-
-This project helps us practice writing cleaner code and working in a team environment.
-# ForceFoodGood
-
-ForceFoodGood is a GrubHub clone that allows users to browse restaurants, view menus, add items to a cart, leave reviews, and complete orders.
 
 ---
 
@@ -31,6 +26,7 @@ This project demonstrates object-oriented programming in JavaScript, input valid
 
 - Browse restaurants and menus
 - Add or remove items from a shopping cart
+- Apply promo codes and calculate real-time tax
 - Checkout and see order confirmation
 - Leave, edit, and view reviews
 
@@ -38,133 +34,84 @@ This project demonstrates object-oriented programming in JavaScript, input valid
 
 ## Architecture Summary
 
-### Classes
+### Core Models & Classes
 
-- **RestaurantModel** – Stores restaurant information and reviews
-    - `addReview(review)` – Adds a new review
-    - `editReview(index, updatedReview)` – Updates an existing review
-    - `calculateAverageReviewRating()` – Returns average stars
-    - `getName()` / `setName()` – Get/set restaurant name
-    - `getAddress()` / `setAddress()` – Get/set restaurant address
+- **OrderModel (Base)** – The foundation for all orders.
+    - Tracks `username`, `restaurant`, `itemsOrdered`, and unique `id`.
+    - Methods: `getTotalItems()`, `getCost()`, `summary()`.
 
-- **RatingModel** – Stores individual reviews
-    - Properties: `stars`, `username`, `date`, `review`
+- **CartOrderModel (Extends OrderModel)** – Manages the active shopping session.
+    - Handles logic for `TAX` (10%) and `PROMO_DISCOUNT`.
+    - `calculateTotal()`: Uses `Number.EPSILON` to ensure floating-point precision for subtotal, tax, and totals.
+    - `addMenuItem(item)` / `removeMenuItem(item)`: Dynamically updates costs.
 
-- **MenuItemModel** – Stores menu items
-    - Properties: `name`, `price`
+- **ConfirmedOrderModel (Extends OrderModel)** – Represents a finalized purchase.
+    - Stores `paymentID` and `userAddress`.
+    - Tracks delivery `status` (e.g., "Processing", "Confirmed").
 
-- **Cart** – Manages items added by the user
-    - Methods: `addItemToCart()`, `removeItemFromCart()`
-    - Tracks quantity, total price, and prevents negative values
+- **PastOrderModel (Extends OrderModel)** – Archive of completed transactions.
+    - Stores the historical `deliveryDate`.
 
-- **User** – Stores user information (email, name, GitHub handle)
+- **RestaurantModel** – Stores restaurant information and reviews.
+    - `addReview(review)`, `calculateAverageReviewRating()`.
 
-- **Order** – Stores order information and status
-    - Includes order ID counter and checkout status
--  **Menu** – Stores and manages menu items
-    - `addItem(menuItem)` – Adds a new `MenuItemModel` to the menu
-    - `removeItemByName(name)` – Removes a menu item by its name
-    - `getAllItems()` – Returns all menu items
-    - `getItemsByCategory(category)` – Returns all items in a specific category
-    - `clearMenu()` – Removes all menu items from the menu
-- **Order** – Stores info pretaining to a speciifc order
-    - Properties: `username`, `address`, `restuarant`, `id`, `totalCost`, 
-      `itemsOrdered`, `totalItems`
-    - Methods: `getUserName()`, `getAddress()`, `getRestuarant()`, `getId()`, `getTotalItems()`, `getItems()`, `getCost()`, `addMenuItem(aMenuItem)`, `removeMenuItem(aMenuItem)`
-      
+- **Menu / MenuItemModel** – Manages the catalog of food.
+    - `MenuItemModel` stores `name`, `price`, `description`, and `category`.
 
 ---
 
-## Learning Goals
+## Validation Rules
 
-- Understand OOP concepts in JavaScript
-- Implement input validation and error handling
-- Write tests using Mocha and Chai
-- Practice professional Git workflow with feature branches, commits, and PRs
+To ensure data integrity, the following rules are enforced:
+
+### Restaurant & Menu
+- **Name**: Must be a non-empty string.
+- **Price**: Must be a number greater than 0.
+- **Rating**: Must be a number between 1 and 5 (inclusive).
+
+### Order & Cart
+- **Order Integrity**: Must contain at least one valid menu item to checkout.
+- **Quantity**: Must be a positive integer.
+- **Checkout**: The cart is cleared after a successful transition to a `ConfirmedOrderModel`.
 
 ---
 
-## Features Implemented
+## Testing Guide
 
-- Dynamic rendering of menus and restaurants
-- Cart functionality with quantity tracking
-- Checkout and order confirmation
-- Reviews with add/edit functionality
-- Documentation updates, including class summary and contribution guidelines
+The project uses **Mocha** and **Chai** for unit testing, focusing on state changes and edge cases.
+
+### Running Tests
+1. Open terminal
+2. Run: `npm test`
+   *Note: You can also open the test HTML file in a browser to see results visually.*
+
+### Key Test Coverage
+- **State Changes**: Verifying a `CartOrderModel` correctly promotes to a `ConfirmedOrderModel`.
+- **Edge Cases**: Handling duplicate items in the cart and ensuring removal logic works.
+- **Precision**: Ensuring `16.042` correctly rounds for financial displays.
+
+---
+
+## Technical Implementation Notes
+
+### Order Logic Flow
+The frontend (`makeOrderPage.html`) interacts with `OrderLogicModel.js` to:
+1. Instantiate a `CartOrderModel`.
+2. Map internal item arrays to dynamic HTML elements.
+3. Use the `summary()` method to provide human-readable status updates.
+4. Disable UI elements once an order is confirmed to prevent double-billing.
+
+### Future Improvements
+- Add detailed tests for the UI rendering logic.
+- Improve UI/UX for the cart and checkout transitions.
+- Enable image uploads for restaurant reviews.
 
 ---
 
 ## Contribution Guidelines
 
-1. Fork the repository
-2. Create a feature branch for your task
-3. Commit changes with clear, descriptive messages
-4. Push your branch to your fork and open a Pull Request
-5. Participate in TA code review
-
----
-
-## Notes / Future Improvements
-
-- Add detailed tests for all classes
-- Improve UI/UX for cart and checkout
-- Enable image uploads for reviews
-
-### FAQS
-#### What is this project?
-This project is a simple GrubHub clone built in JavaScript. 
-It includes models for restaurants and ratings, along with basic tests using Mocha and Chai.
-
-
-#### How do I run the tests?
-Open the test HTML file in a browser.
-The test results will display on the page.
-
-
-#### What models are included?
-- `RestaurantModel` – Stores restaurant name, address, and reviews.
-- `RatingModel` – Stores review data including stars, username, date, and an optional review.
-- `MenuItemModel` (if implemented) – Represents a menu item with name, price, description, and category.
-- `UserModel` (if implemented) - Represents a user with ID, name, and email.
-- `menuModel` - Stores and manages menu items, and allows for addition/removal/retrieval
-
-## Validation Rules
-To ensure data integrity and prevent invalid inputs, the following validation rules are enforced in the application.
-### Restaurant Validation
-- Name
-  - Must not be empty
-  - must be a string
-
-### Menu validation
-- Name
-    - Must not be empty
-    - Must be a string
-
-- Price
-    - Must be a number.
-    - Must be greater than 0.
-    - Negative or zero values are not allowed.
-
-- Rating
-    - Must be a number.
-    - Must be between 1 and 5 (inclusive).
-
-### Order Validation
-- An order must contain at least one valid menu item
-- Quantity must be a positive integer
-
-### Cart Validation
-- The cart cannot proceed to checkout if it is empty
-- After successful checkout, the cart is cleared
-## Testing Guide
-
-### How to run tests
-1. Open terminal
-2. Run:
-npm test
-### How to write tests
-- Go to tests folder  
-- Create file like:
-MenuItemModel.test.js
-- Example:
-const item = new MenuItemModel("Burger", 8.99);
+1. Fork the repository.
+2. Create a feature branch for your task.
+3. Commit changes with clear, descriptive messages.
+4. Push your branch to your fork and open a Pull Request.
+5. Participate in TA code review.

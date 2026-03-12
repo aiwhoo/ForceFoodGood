@@ -5,16 +5,13 @@ class CartOrderModel extends OrderModel {
     static PROMO_DISCOUNT = 0.05;
 
 
-    constructor(base, lastModified, promoCode, validationErrors, validPromoCodes) {
+    constructor(base, promoCode, validationErrors, validPromoCodes) {
         super(base.username, base.restaurant, base.id);
-        this.lastModified = lastModified;
         this.promoCode = promoCode;
         this.validationErrors = validationErrors;
         this.validPromoCodes = validPromoCodes;
     }
-    updateLastModified() {
-        this.lastModified = new Date().toISOString();
-    }
+
 
     // Single source of truth for price
     calculateTotal() {

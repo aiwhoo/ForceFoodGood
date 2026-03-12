@@ -9,10 +9,10 @@ class ConfirmedOrderModel extends OrderModel {
         this.totalCost = base.totalCost;
         this.subtotal = base.subtotal;
         this.taxTotal = base.taxTotal;
+        this.lastModified = base.lastModified;
 
         this.paymentID = paymentID;
         this.userAddress = userAddress;
-        this.lastModified = new Date().toISOString();
         this.status = null;
     }
     getPaymentID() {
