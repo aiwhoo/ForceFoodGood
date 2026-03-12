@@ -9,7 +9,8 @@ class AuthProvider {
     }
     userData = UserData.data
     fetchAccount() {
-        
+        console.log("implement in subclasses")
+        return false;
     }
 }
 export default AuthProvider
