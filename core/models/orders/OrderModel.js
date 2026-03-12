@@ -50,6 +50,11 @@ class OrderModel {
         return this.itemsOrdered;
     }
 
+    // generate summary of an order
+    summary() {
+        return `Order ${this.id} for ${this.username}`;
+    }
+
 
 
 }

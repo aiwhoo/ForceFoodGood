@@ -3,9 +3,16 @@ import OrderModel from "./OrderModel.js";
 class ConfirmedOrderModel extends OrderModel {
     constructor(base, paymentID, userAddress){
         super(base.username, base.restaurant, base.id);
+
+
+        this.itemsOrdered = base.itemsOrdered;
+        this.totalCost = base.totalCost;
+        this.subtotal = base.subtotal;
+        this.taxTotal = base.taxTotal;
+
         this.paymentID = paymentID;
         this.userAddress = userAddress;
-        this.timeOfOrder = new Date().toISOString();
+        this.lastModified = new Date().toISOString();
         this.status = null;
     }
     getPaymentID() {
@@ -19,6 +26,9 @@ class ConfirmedOrderModel extends OrderModel {
     }
     updateStatus(newStatus) {
         this.status = newStatus;
+    }
+    summary() {
+        return super.summary()+`\n[CONFIRMED] Status: ${this.status} - Delivering to ${this.userAddress}`;
     }
 
 

@@ -16,28 +16,19 @@ class CartOrderModel extends OrderModel {
         this.lastModified = new Date().toISOString();
     }
 
-    applyPromoCode(promoCode) {
-        if (this.promoCode in this.validPromoCodes) {
-            this.totalCost = this.totalCost * 0.95
-        }
-    }
-
-    applyTax() {
-        this.totalCost = this.totalCost * (this.TAX)
-    }
-
     // Single source of truth for price
     calculateTotal() {
         // 1. Calculate Subtotal
-        let subtotal = this.itemsOrdered.reduce((sum, item) => sum + item.price, 0);
+        let rawSubtotal = this.itemsOrdered.reduce((sum, item) => sum + item.price, 0);
+        let subtotal = Math.round((rawSubtotal + Number.EPSILON) * 100) / 100;
 
         // 2. Apply Promo (if valid)
         if (this.promoCode in this.validPromoCodes) {
-            subtotal -= (subtotal * CartOrderModel.PROMO_DISCOUNT);
+            subtotal -= (subtotal * this.validPromoCodes[this.promoCode]);
         }
 
         // 3. Apply Tax on the discounted amount
-        let taxAmount = subtotal * CartOrderModel.TAX;
+        let taxAmount = (subtotal * CartOrderModel.TAX) - subtotal;
 
         this.totalCost = subtotal + taxAmount;
         this.updateLastModified()
@@ -55,7 +46,12 @@ class CartOrderModel extends OrderModel {
         if (index > -1) {
             this.itemsOrdered.splice(index, 1);
             this.calculateTotal();
+        } else {
+            throw new Error("Unable to remove item -- duped MenuItemModel");
         }
+    }
+    summary() {
+        return super.summary()+`\n[CART] ${this.itemsOrdered.length} items - Total: $${this.totalCost.toFixed(2)}`;
     }
 }
 export default CartOrderModel;

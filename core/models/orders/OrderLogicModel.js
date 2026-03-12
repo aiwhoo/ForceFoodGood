@@ -1,6 +1,7 @@
 import CartOrderModel from "./CartOrderModel.js";
 import ConfirmedOrderModel from "./ConfirmedOrderModel.js";
 import PastOrderModel from "./PastOrderModel.js";
+import MenuItemModel from "../menuItemModel.js";
 
 // 1. Mock Data Setup
 const mockBase = { username: "HungryStudent", restaurant: "Pizza Palace", id: "FFG-123" };
@@ -11,12 +12,14 @@ const cart = new CartOrderModel(mockBase, Date.now(), "SAVE5", [], validCodes);
 const cartItemsDiv = document.getElementById('cart-items');
 const totalSpan = document.getElementById('total');
 const checkoutBtn = document.getElementById('checkout-btn');
+const orderSummaryDiv = document.getElementById('order-summary');
 
 // 3. Simple function to add a mock item and update UI
-function addItemToCart(name, price) {
-    cart.addMenuItem({ name, price });
+function addItemToCart(aMenuItem) {
+    cart.addMenuItem(aMenuItem);
     updateUI();
 }
+
 
 function updateUI() {
     // Render items
@@ -42,6 +45,7 @@ checkoutBtn.addEventListener('click', () => {
 
     // Show the status section
     document.getElementById('status-section').classList.remove('hidden');
+    orderSummaryDiv.innerText = confirmed.summary();
     document.getElementById('order-id').innerText = `ID: ${confirmed.getId()}`;
     document.getElementById('order-status').innerText = confirmed.getStatus();
 
@@ -50,4 +54,5 @@ checkoutBtn.addEventListener('click', () => {
 });
 
 // Seed the cart with one item for the demo
-addItemToCart("Pepperoni Pizza", 15.00);
+addItemToCart(new MenuItemModel("pizza", 5.42,"idk","pizza"));
+orderSummaryDiv.innerText = cart.summary();
