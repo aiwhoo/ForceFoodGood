@@ -1,10 +1,8 @@
 import AuthProvider from "./AuthProvider.js"
 class OAuthProvider extends AuthProvider {
-    constructor() {
-        super()
-    }
     fetchAccount(info) {
         const token = info.token
+        //find user with the specified token
         const user = this.userData.find(u => u.token == token)
         if (!user) {
             console.log(info)

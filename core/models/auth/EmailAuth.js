@@ -1,10 +1,8 @@
 import AuthProvider from "./AuthProvider.js"
 class EmailAuth extends AuthProvider {
-    constructor() {
-        super()
-    }
     fetchAccount(info) {
         const email = info.email
+        //find user with the specified email
         const user = this.userData.find(u => u.email == email)
         if (!user) {
             console.log(info)

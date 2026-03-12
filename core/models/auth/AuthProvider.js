@@ -7,6 +7,7 @@ class AuthProvider {
     login(user) {
         user.login()
     }
+    //load user data
     userData = UserData.data
     fetchAccount() {
         console.log("implement in subclasses")
