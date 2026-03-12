@@ -1,4 +1,5 @@
-class Menu {
+import MenuItemModel from "../menuItemModel.js";
+class MenuModel {
     constructor(restaurant = "NO RESTAURANT") {
         this.items = [];
         this.restaurant = restaurant
@@ -28,3 +29,4 @@ class Menu {
         this.items = [];
     }
 }
+export default MenuModel;
