@@ -19,7 +19,7 @@ describe('OrderModelTests', () => {
     })
     it("CartOrderModels should update correctly when given a new menuItem (happy path)", () => {
         const order1 = new OrderModel("Pascal",null,1);
-        const cartOrder1 = new CartOrderModel(order1, 0, "50% OFF", null, promoCodes);
+        const cartOrder1 = new CartOrderModel(order1, "50% OFF", null, promoCodes);
         cartOrder1.addMenuItem(pizza);
         expect(cartOrder1.subtotal).to.equal(.5);
         expect(cartOrder1.totalCost).to.equal((0.5)*1.1);
@@ -29,7 +29,7 @@ describe('OrderModelTests', () => {
     })
     it("CartOrderModel to ConfirmedOrderModel (state change)", () =>{
         const order2 = new OrderModel("Atticus",null,2);
-        const cartOrder2 = new CartOrderModel(order2, 0, null, null, promoCodes);
+        const cartOrder2 = new CartOrderModel(order2, null, null, promoCodes);
         cartOrder2.addMenuItem(pizza);
         const confirmedOrder1 = new ConfirmedOrderModel(cartOrder2, "Payment ID", "123 street");
         expect(confirmedOrder1.getCost()).to.equal(1.1);
@@ -41,7 +41,7 @@ describe('OrderModelTests', () => {
     })
     it("Handling duped items (edge case)", () =>{
         const order3 = new OrderModel("Oesew",null,3);
-        const cartOrder3 = new CartOrderModel(order3, 0, null, null, promoCodes);
+        const cartOrder3 = new CartOrderModel(order3, null, null, promoCodes);
         cartOrder3.addMenuItem(pizza);
         cartOrder3.addMenuItem(pizza);
         expect(cartOrder3.getTotalItems()).to.equal(2);
@@ -53,7 +53,7 @@ describe('OrderModelTests', () => {
 
     it("Floating point precision", () =>{
         const order4 = new OrderModel("Sally",null,4);
-        const cartOrder4 = new CartOrderModel(order4, 0, null, null, promoCodes);
+        const cartOrder4 = new CartOrderModel(order4, null, null, promoCodes);
         cartOrder4.addMenuItem(cake);
         cartOrder4.addMenuItem(falafel);
         expect(cartOrder4.subtotal).to.equal(16.04);
