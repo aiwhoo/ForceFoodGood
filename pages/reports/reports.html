@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<!-- Header / Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-navy">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Reports</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                    <button class="nav-link btn btn-link report-btn" data-target="sales-report">
+                        Sales Report
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link btn btn-link report-btn" data-target="rating-report">
+                        Rating Report
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link btn btn-link report-btn" data-target="delivery-report">
+                        Delivery Report
+                    </button>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mt-4">
+
+    <!-- Sales Report -->
+    <div id="sales-report" class="report-section">
+        <h2>Sales Report</h2>
+        <pre id="sales-output" class="bg-light p-3 rounded"></pre>
+    </div>
+
+    <!-- Rating Report -->
+    <div id="rating-report" class="report-section d-none">
+        <h2>Rating Report</h2>
+        <pre id="rating-output" class="bg-light p-3 rounded"></pre>
+    </div>
+
+    <!-- Delivery Report -->
+    <div id="delivery-report" class="report-section d-none">
+        <h2>Delivery Report</h2>
+        <pre id="delivery-output" class="bg-light p-3 rounded"></pre>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="script.js"></script>
+</body>
+</html>
