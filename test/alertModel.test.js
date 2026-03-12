@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { AlertModel, OrderAlert, SystemAlert, DriverAlert }
-    from '../core/models/AlertModel.js'
+    from '../core/models/alertModel.js'
 
 describe("AlertModel Polymorphism Tests", function () {
 
