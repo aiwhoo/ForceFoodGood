@@ -71,6 +71,10 @@ This project demonstrates object-oriented programming in JavaScript, input valid
     - Properties: `username`, `address`, `restuarant`, `id`, `totalCost`, 
       `itemsOrdered`, `totalItems`
     - Methods: `getUserName()`, `getAddress()`, `getRestuarant()`, `getId()`, `getTotalItems()`, `getItems()`, `getCost()`, `addMenuItem(aMenuItem)`, `removeMenuItem(aMenuItem)`
+
+- **AuthProvider** - Allows authentication by email, password and token
+    - Subclasses: `EmailAuth`, `OAuthProvider`, `TwoFactorAuth`
+    read /docs/authProvider.md for more info
       
 
 ---
