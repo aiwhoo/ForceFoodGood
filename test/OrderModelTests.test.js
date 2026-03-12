@@ -3,6 +3,7 @@ import OrderModel from "../core/models/orders/OrderModel.js"
 import CartOrderModel from "../core/models/orders/CartOrderModel.js";
 import MenuItemModel from "../core/models/menuItemModel.js";
 import ConfirmedOrderModel from "../core/models/orders/ConfirmedOrderModel.js";
+import PastOrderModel from "../core/models/orders/PastOrderModel.js";
 
 describe('OrderModelTests', () => {
 
@@ -56,6 +57,12 @@ describe('OrderModelTests', () => {
         cartOrder4.addMenuItem(cake);
         cartOrder4.addMenuItem(falafel);
         expect(cartOrder4.subtotal).to.equal(16.04);
+    })
+    it("Past Order Logging", () => {
+        const order5 = new OrderModel("Pizza", null, 5);
+        const pastOrder = new PastOrderModel(order5, "3/13/2026");
+        expect(pastOrder.getDeliveryDate).to.equal("3/13/2026");
+
     })
 
 
