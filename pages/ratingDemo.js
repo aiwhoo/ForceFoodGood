@@ -71,3 +71,23 @@ function updateAverage(){
         "Average Rating: " + avg + " ★";
 
 }
+
+
+const ratingType = document.getElementById("ratingType");
+const itemName = document.getElementById("itemName");
+
+ratingType.addEventListener("change", function() {
+
+    if (ratingType.value === "restaurant") {
+        itemName.textContent = "Anish's Cat Cafe";
+    }
+
+    else if (ratingType.value === "menu") {
+        itemName.textContent = "Spicy Tuna Roll";
+    }
+
+    else if (ratingType.value === "driver") {
+        itemName.textContent = "Driver: Alex";
+    }
+
+});
