@@ -61,8 +61,10 @@ describe('OrderModelTests', () => {
     it("Past Order Logging", () => {
         const order5 = new OrderModel("Pizza", null, 5);
         const pastOrder = new PastOrderModel(order5, "3/13/2026");
-        expect(pastOrder.getDeliveryDate).to.equal("3/13/2026");
-
+        pastOrder.status = "Delivered";
+        expect(pastOrder.getDeliveryDate()).to.equal("3/13/2026");
+        expect(pastOrder.summary()).to.equal("Order 5 for Pizza\n" +
+            "[DELIVERED] Status: Delivered - Delivered on 3/13/2026");
     })
 
 

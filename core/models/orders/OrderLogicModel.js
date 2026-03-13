@@ -2,6 +2,7 @@ import CartOrderModel from "./CartOrderModel.js";
 import ConfirmedOrderModel from "./ConfirmedOrderModel.js";
 import PastOrderModel from "./PastOrderModel.js";
 import MenuItemModel from "../menuItemModel.js";
+import pastOrderModel from "./PastOrderModel.js";
 
 // 1. Mock Data Setup
 const mockBase = { username: "HungryStudent", restaurant: "Pizza Palace", id: "FFG-123" };
@@ -51,6 +52,15 @@ checkoutBtn.addEventListener('click', () => {
 
     checkoutBtn.disabled = true;
     checkoutBtn.innerText = "Order Placed!";
+    setTimeout(()=>{
+        console.log("Timeout ran");
+        const pastOrder = new PastOrderModel(confirmed,"3/13/2026");
+        pastOrder.updateStatus("Delivered");
+        document.getElementById('order-status').innerText = pastOrder.getStatus();
+        orderSummaryDiv.innerText = pastOrder.summary();
+        document.getElementById('past-orders-list').innerText = `ID: ${pastOrder.getId()}`;
+        updateUI();
+    }, 5000);
 });
 
 // Seed the cart with one item for the demo
