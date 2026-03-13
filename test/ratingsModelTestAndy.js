@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import RatingModel from "../core/models/ratingsModel.js";
+import RatingModel from "../core/models/ratings/ratingsModel.js";
 
 describe('Restaurant Rating System (Andy Version)', function() {
     it('should create a valid rating for this happy test', function() {
