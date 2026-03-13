@@ -29,9 +29,10 @@ describe('Feedback Polymorphism Tests', () => {
         const outputs = feedbackList.map(f => f.getFormattedFeedback());
         expect(outputs[0]).to.contain("Restaurant");
         expect(outputs[1]).to.contain("Driver");
+    }); // <--- Added this to close the mixed feedback test
+
     it('should correctly override for MenuItemFeedback', () => {
         const mf = new MenuItemFeedback("Andy", 5, "Amazing Pizza", "Pepperoni Pizza");
         expect(mf.getFormattedFeedback()).to.contain("Food: Pepperoni Pizza");
     });
-});
-}
+}); // This correctly closes the describe block
