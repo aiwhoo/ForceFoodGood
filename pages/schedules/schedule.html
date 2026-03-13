@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ForceFoodGood | ScheduleModel Manager</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Your Official Styles -->
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    /* Extra styles for the status boxes to match your theme */
+    .status-box { padding: 15px; border-radius: 8px; text-align: center; margin-top: 15px; font-weight: bold; border: 2px solid transparent; }
+    .available { background-color: #e7f5ff; color: #004a99; border-color: #000080; }
+    .unavailable { background-color: #f8d7da; color: #721c24; border-color: #dc3545; }
+    .card { border: 1px solid #dee2e6; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-navy mb-5 shadow">
+  <div class="container">
+    <span class="navbar-brand mb-0 h1 mascot-logo">🍔</span>
+    <span class="navbar-brand mb-0 h1">ForceFoodGood <span class="text-white fw-light">Scheduling</span></span>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="row text-center mb-5">
+    <div class="col">
+      <h2 class="fw-bold text-navy">Polymorphic ScheduleModel Check</h2>
+      <p class="text-muted">Demonstrating <code>isAvailable()</code> across three unique subclasses.</p>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Restaurant Card -->
+    <div class="col-12 col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-navy text-white fw-bold">Restaurant ScheduleModel</div>
+        <div class="card-body">
+          <p class="small">Open: 09:00 | Close: 22:00</p>
+          <label for="resTimeInput" class="form-label text-navy small fw-bold">Current Time (24h):</label>
+          <input type="number" id="resTimeInput" class="form-control" placeholder="e.g. 1400">
+          <button id="btnRes" class="btn btn-navy w-100 mt-3">Check Store</button>
+          <div id="resStatus" class="status-box d-none"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Driver Card -->
+    <div class="col-12 col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-navy text-white fw-bold">Driver Availability</div>
+        <div class="card-body">
+          <p class="small">Shift: 08:00 - 16:00</p>
+          <div class="form-check form-switch mt-3">
+            <input class="form-check-input" type="checkbox" id="driverBreakToggle">
+            <label class="form-check-label text-navy" for="driverBreakToggle">Driver is on Break</label>
+          </div>
+          <button id="btnDriver" class="btn btn-navy w-100 mt-3">Verify Driver</button>
+          <div id="driverStatus" class="status-box d-none"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delivery Slot Card -->
+    <div class="col-12 col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-navy text-white fw-bold">Delivery Slot</div>
+        <div class="card-body">
+          <p class="small">Slot: Afternoon Delivery</p>
+          <p class="small text-muted">A slot becomes unavailable if it has been booked.</p>
+          <button id="btnSlot" class="btn btn-navy w-100 mt-3">Book This Slot</button>
+          <div id="slotStatus" class="status-box d-none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE LOGIC -->
+<script type="module">
+  import { RestaurantSchedule, DriverSchedule, DeliverySlot } from '../../core/models/scheduleModel.js';
+
+  const myStore = new RestaurantSchedule("R1", 900, 2200);
+  const myDriver = new DriverSchedule("D1", 800, 1600);
+  const mySlot = new DeliverySlot("S1");
+
+  document.getElementById('btnRes').addEventListener('click', () => {
+    const val = parseInt(document.getElementById('resTimeInput').value);
+    const ok = myStore.isAvailable(val);
+    updateUI('resStatus', ok, ok ? "STORE OPEN" : "STORE CLOSED");
+  });
+
+  document.getElementById('btnDriver').addEventListener('click', () => {
+    myDriver.onBreak = document.getElementById('driverBreakToggle').checked;
+    const ok = myDriver.isAvailable(1200);
+    updateUI('driverStatus', ok, ok ? "DRIVER READY" : "DRIVER UNAVAILABLE");
+  });
+
+  document.getElementById('btnSlot').addEventListener('click', () => {
+    mySlot.isBooked = true;
+    updateUI('slotStatus', false, "SLOT BOOKED");
+  });
+
+  function updateUI(id, ok, msg) {
+    const el = document.getElementById(id);
+    el.classList.remove('d-none', 'available', 'unavailable');
+    el.classList.add(ok ? 'available' : 'unavailable');
+    el.innerText = msg;
+  }
+</script>
+</body>
+</html>
