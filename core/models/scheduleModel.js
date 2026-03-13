@@ -20,6 +20,9 @@ export class RestaurantSchedule extends ScheduleModel {
         super(id);
         this.openTime = openTime;
         this.closeTime = closeTime;
+        if (openTime > closeTime) {
+            throw new Error("Opening time cannot be later than closing time");
+        }
     }
 
     /**

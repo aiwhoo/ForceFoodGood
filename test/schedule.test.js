@@ -31,5 +31,11 @@ describe("ScheduleModel Polymorphism Tests", () => {
         slot.isBooked = true;
         expect(slot.isAvailable()).to.be.false;
     });
+    // 5. Invalid Input Case (Requested by Peer Reviewers)
+    it("should throw an error if opening time is later than closing time", () => {
+        // Why: Validates the new constructor logic requested by reviewers to prevent logical data errors.
+        const badCall = () => new RestaurantSchedule("R_ERR", 2200, 900);
+        expect(badCall).to.throw("Opening time cannot be later than closing time");
+    });
 
 });
