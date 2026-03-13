@@ -14,6 +14,7 @@ class Cart {
         }
     }
 
+
     calculateTotal() {
         let total = 0;
         for (let item of this.items) {
@@ -27,7 +28,40 @@ class Cart {
     }
 }
 
-export default Cart;
+class CustomerCart extends Cart {
+
+    constructor(customerName) {
+        super();
+        this.customerName = customerName;
+    }
+
+    checkout() {
+        return `Checkout successful for ${this.customerName}. Total: $${this.calculateTotal()}`;
+    }
+
+}
+
+class GiftCart extends Cart {
+
+    constructor(recipientName, message) {
+        super();
+        this.recipientName = recipientName;
+        this.message = message;
+    }
+
+    validateGift() {
+        if (!this.message) {
+            throw new Error("Gift message is required.");
+        }
+    }
+
+    checkout() {
+        this.validateGift();
+        return `Gift order for ${this.recipientName}. Total: $${this.calculateTotal()}`;
+    }
+
+}
+export { Cart, CustomerCart, GiftCart };
 
 function checkout(cart) {
   // Prevent checkout if cart is empty
