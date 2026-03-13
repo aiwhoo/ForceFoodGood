@@ -172,3 +172,10 @@ npm test
 MenuItemModel.test.js
 - Example:
 const item = new MenuItemModel("Burger", 8.99);
+
+## 🧪 Test Documentation: Feedback Hierarchy
+
+### How to Run Tests
+To execute the test suite for the feedback system, run the following command in your terminal:
+```bash
+npm test

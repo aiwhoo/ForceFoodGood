@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForceFoodGood - Feedback System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* CSW Blue and White Palette */
+        :root {
+            --csw-blue: #003366;
+            --csw-white: #ffffff;
+            --csw-light-bg: #f8f9fa;
+        }
+        body { background-color: var(--csw-light-bg); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .navbar { background-color: var(--csw-blue); color: var(--csw-white); border-bottom: 3px solid #002244; }
+        .card { border: 1px solid var(--csw-blue); }
+        .card-header { background-color: var(--csw-blue); color: var(--csw-white); font-weight: bold; }
+        .btn-primary { background-color: var(--csw-blue); border: none; transition: 0.3s; }
+        .btn-primary:hover { background-color: #002244; transform: translateY(-1px); }
+        .alert-info { border-left: 5px solid var(--csw-blue); background-color: var(--csw-white); color: var(--csw-blue); }
+    </style>
+</head>
+<body>
+<nav class="navbar p-3 mb-4 shadow-sm">
+    <div class="container">
+        <h1 class="h4 mb-0 text-white">ForceFoodGood Feedback Portal</h1>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header text-center">Submit New Review</div>
+                <div class="card-body">
+                    <label class="form-label">Feedback Type</label>
+                    <select id="type" class="form-select mb-3">
+                        <option value="restaurant">Restaurant</option>
+                        <option value="driver">Driver</option>
+                        <option value="food">Menu Item</option>
+                    </select>
+
+                    <input type="text" id="userName" class="form-control mb-3" placeholder="Your Name">
+                    <input type="number" id="rating" class="form-control mb-3" placeholder="Rating (1-5)" min="1" max="5">
+                    <textarea id="comment" class="form-control mb-3" placeholder="Describe your experience..."></textarea>
+                    <input type="text" id="target" class="form-control mb-3" placeholder="Target (e.g., Pizza Palace, Driver Name, or Dish)">
+
+                    <button class="btn btn-primary w-100 py-2" onclick="demoPolymorphism()">Process Polymorphic Feedback</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="card shadow-sm h-100">
+                <div class="card-header text-center">Polymorphic Output Logic</div>
+                <div class="card-body bg-white" id="outputArea">
+                    <p class="text-muted text-center mt-5">Select a type and submit to see the class-specific override in action.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    class RestaurantFeedback {
+        constructor(u, r, c, t) { this.u=u; this.r=r; this.c=c; this.t=t; }
+        getFormattedFeedback() { return `[Restaurant: ${this.t}] ${this.u}: ${this.c} (${this.r}/5)`; }
+    }
+    class DriverFeedback {
+        constructor(u, r, c, t) { this.u=u; this.r=r; this.c=c; this.t=t; }
+        getFormattedFeedback() { return `[Driver: ${this.t}] ${this.u} rated: ${this.r}/5 stars`; }
+    }
+    class MenuItemFeedback {
+        constructor(u, r, c, t) { this.u=u; this.r=r; this.c=c; this.t=t; }
+        getFormattedFeedback() { return `[Food: ${this.t}] ${this.u} said: ${this.c}`; }
+    }
+
+    function demoPolymorphism() {
+        const type = document.getElementById('type').value;
+        const u = document.getElementById('userName').value;
+        const r = document.getElementById('rating').value;
+        // Validation check to stop 6-star ratings
+        if (r < 1 || r > 5) {
+            alert("Rating must be between 1 and 5!");
+            return; // This stops the function from running further
+        }
+        const c = document.getElementById('comment').value;
+        const t = document.getElementById('target').value;
+
+        if (!u || !r || !t) {
+            alert("Please fill out all fields.");
+            return;
+        }
+
+        let fb;
+        // Demonstrating the creation of different objects based on type
+        if (type === 'restaurant') fb = new RestaurantFeedback(u, r, c, t);
+        else if (type === 'driver') fb = new DriverFeedback(u, r, c, t);
+        else fb = new MenuItemFeedback(u, r, c, t);
+
+        // The Polymorphic Call: same method name, different class logic
+        const resultHtml = `
+                <div class="alert alert-info shadow-sm">
+                    <strong>System Output:</strong><br>
+                    ${fb.getFormattedFeedback()}
+                </div>
+                <div class="mt-3 p-3 border rounded bg-light">
+                    <small class="text-secondary">Class Instance: <strong>${fb.constructor.name}</strong></small>
+                </div>
+            `;
+        document.getElementById('outputArea').innerHTML = resultHtml;
+    }
+</script>
+</body>
+</html>
