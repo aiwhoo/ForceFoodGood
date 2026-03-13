@@ -57,6 +57,12 @@ This project demonstrates object-oriented programming in JavaScript, input valid
     - Methods: `addItemToCart()`, `removeItemFromCart()`
     - Tracks quantity, total price, and prevents negative values
 
+- **DiscountStrategy** – Base class for the Strategy Pattern
+    - Centralizes cart validation logic for all subclasses.
+    - **PercentageDiscount** – Calculates a percentage reduction (e.g., 20% off).
+    - **FlatDiscount** – Subtracts a fixed dollar amount while preventing negative totals.
+    - **ConditionalDiscount** – Applies a discount only if a quantity threshold is met.
+    - 
 - **User** – Stores user information (email, name, GitHub handle)
 
 - **Order** – Stores order information and status
