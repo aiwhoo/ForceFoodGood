@@ -71,7 +71,6 @@ This project demonstrates object-oriented programming in JavaScript, input valid
 - **AuthProvider** - Allows authentication by email, password and token
     - Subclasses: `EmailAuth`, `OAuthProvider`, `TwoFactorAuth`
     read /docs/authProvider.md for more info
-      
 
 ---
 
