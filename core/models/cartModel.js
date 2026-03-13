@@ -14,9 +14,6 @@ class Cart {
         }
     }
 
-    removeItem(name) {
-        this.items = this.items.filter(item => item.name !== name);
-    }
 
     calculateTotal() {
         let total = 0;
