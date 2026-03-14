@@ -31,6 +31,7 @@ This project demonstrates object-oriented programming in JavaScript, input valid
 
 - Browse restaurants and menus
 - Add or remove items from a shopping cart
+- Apply promo codes and calculate real-time tax
 - Checkout and see order confirmation
 - Leave, edit, and view reviews
 
@@ -64,8 +65,7 @@ This project demonstrates object-oriented programming in JavaScript, input valid
     - **ConditionalDiscount** – Applies a discount only if a quantity threshold is met.
     - 
 - **User** – Stores user information (email, name, GitHub handle)
-
-- **Order** – Stores order information and status
+- 
     - Includes order ID counter and checkout status
 -  **Menu** – Stores and manages menu items
     - `addItem(menuItem)` – Adds a new `MenuItemModel` to the menu
@@ -73,29 +73,30 @@ This project demonstrates object-oriented programming in JavaScript, input valid
     - `getAllItems()` – Returns all menu items
     - `getItemsByCategory(category)` – Returns all items in a specific category
     - `clearMenu()` – Removes all menu items from the menu
-- **Order** – Stores info pretaining to a speciifc order
-    - Properties: `username`, `address`, `restuarant`, `id`, `totalCost`, 
-      `itemsOrdered`, `totalItems`
-    - Methods: `getUserName()`, `getAddress()`, `getRestuarant()`, `getId()`, `getTotalItems()`, `getItems()`, `getCost()`, `addMenuItem(aMenuItem)`, `removeMenuItem(aMenuItem)`
 
 - **AuthProvider** - Allows authentication by email, password and token
     - Subclasses: `EmailAuth`, `OAuthProvider`, `TwoFactorAuth`
     read /docs/authProvider.md for more info
-      
 
 ---
 
 ## Learning Goals
 
-- Understand OOP concepts in JavaScript
-- Implement input validation and error handling
-- Write tests using Mocha and Chai
-- Practice professional Git workflow with feature branches, commits, and PRs
+- **OrderModel (Base)** – The foundation for all orders.
+    - Tracks `username`, `restaurant`, `itemsOrdered`, and unique `id`.
+    - Methods: `getTotalItems()`, `getCost()`, `summary()`.
 
----
+- **CartOrderModel (Extends OrderModel)** – Manages the active shopping session.
+    - Handles logic for `TAX` (10%) and `PROMO_DISCOUNT`.
+    - `calculateTotal()`: Uses `Number.EPSILON` to ensure floating-point precision for subtotal, tax, and totals.
+    - `addMenuItem(item)` / `removeMenuItem(item)`: Dynamically updates costs.
 
-## Features Implemented
+- **ConfirmedOrderModel (Extends OrderModel)** – Represents a finalized purchase.
+    - Stores `paymentID` and `userAddress`.
+    - Tracks delivery `status` (e.g., "Processing", "Confirmed").
 
+- **PastOrderModel (Extends OrderModel)** – Archive of completed transactions.
+    - Stores the historical `deliveryDate`.
 - Dynamic rendering of menus and restaurants
 - Cart functionality with quantity tracking
 - Checkout and order confirmation
@@ -103,15 +104,11 @@ This project demonstrates object-oriented programming in JavaScript, input valid
 - Documentation updates, including class summary and contribution guidelines
 - Polymorphic Scheduling System: A fully extensible hierarchy for managing store hours, driver shifts, and delivery bookings, including a responsive management UI built with Bootstrap.
 
----
+- **RestaurantModel** – Stores restaurant information and reviews.
+    - `addReview(review)`, `calculateAverageReviewRating()`.
 
-## Contribution Guidelines
-
-1. Fork the repository
-2. Create a feature branch for your task
-3. Commit changes with clear, descriptive messages
-4. Push your branch to your fork and open a Pull Request
-5. Participate in TA code review
+- **Menu / MenuItemModel** – Manages the catalog of food.
+    - `MenuItemModel` stores `name`, `price`, `description`, and `category`.
 
 ---
 
@@ -176,7 +173,9 @@ To ensure data integrity and prevent invalid inputs, the following validation ru
     - `DeliverySlot` must return `false` if `isBooked` is true to prevent double-booking.
 ## Testing Guide
 
-### How to run tests
+The project uses **Mocha** and **Chai** for unit testing, focusing on state changes and edge cases.
+
+### Running Tests
 1. Open terminal
 2. Run:
 npm test
@@ -186,3 +185,25 @@ npm test
 MenuItemModel.test.js
 - Example:
 const item = new MenuItemModel("Burger", 8.99);
+
+### Order Logic Flow
+The frontend (`makeOrderPage.html`) interacts with `OrderLogicModel.js` to:
+1. Instantiate a `CartOrderModel`.
+2. Map internal item arrays to dynamic HTML elements.
+3. Use the `summary()` method to provide human-readable status updates.
+4. Disable UI elements once an order is confirmed to prevent double-billing.
+
+### Future Improvements
+- Add detailed tests for the UI rendering logic.
+- Improve UI/UX for the cart and checkout transitions.
+- Enable image uploads for restaurant reviews.
+
+---
+
+## Contribution Guidelines
+
+1. Fork the repository.
+2. Create a feature branch for your task.
+3. Commit changes with clear, descriptive messages.
+4. Push your branch to your fork and open a Pull Request.
+5. Participate in TA code review.
