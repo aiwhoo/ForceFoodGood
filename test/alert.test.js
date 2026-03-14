@@ -1,3 +1,4 @@
+import { expect } from 'chai';
 import Alert from "../core/models/Alert.js";
 import OrderAlert from "../core/models/alert/OrderAlert.js";
 import SystemAlert from "../core/models/alert/SystemAlert.js";
