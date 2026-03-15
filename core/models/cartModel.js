@@ -26,7 +26,7 @@ class Cart {
         this.items = [];
     }
 }
-
+/*
 export default Cart;
 
 function checkout(cart) {
@@ -46,3 +46,4 @@ function checkout(cart) {
     console.log("Checkout successful. Cart has been cleared.");
   }
 }
+*/

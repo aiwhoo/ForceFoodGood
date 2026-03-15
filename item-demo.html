@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item Hierarchy Demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="csw.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Polymorphism Demo: Item Hierarchy</h2>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">MenuItem Test</h5>
+          <p><strong>Item:</strong> <span id="menuItemName">Classic Burger</span></p>
+          <p><strong>Price:</strong> $<span id="menuItemPrice">10.99</span></p>
+          <p><strong>Description:</strong> <span id="menuItemDesc">A delicious beef patty.</span></p>
+          <button class="btn btn-primary w-100" onclick="demoUpdateMenu()">Trigger updatePrice() & updateDescription()</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">CartItem Test</h5>
+          <p><strong>Item:</strong> <span id="cartItemName">Fries</span></p>
+          <p><strong>Base Price:</strong> $<span id="cartItemPrice">4.00</span></p>
+          <p><strong>Quantity:</strong> 3</p>
+          <p class="text-success fw-bold">Subtotal: $<span id="cartSubtotal">12.00</span></p>
+          <button class="btn btn-success w-100" onclick="demoCartDiscount()">Trigger applyDiscount(20%)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import MenuItem from './core/models/items/MenuItem.js';
+  import CartItem from './core/models/items/CartItem.js';
+
+  const myMenuFood = new MenuItem("Classic Burger", 10.99, "A delicious beef patty.");
+
+  window.demoUpdateMenu = () => {
+    myMenuFood.updatePrice(12.99);
+    myMenuFood.updateDescription("Gourmet beef patty with cheese.");
+    document.getElementById('menuItemPrice').innerText = myMenuFood.price.toFixed(2);
+    document.getElementById('menuItemDesc').innerText = myMenuFood.description;
+    alert("MenuItem subclass successfully updated price and description!");
+  };
+
+  const myCartFood = new CartItem("Fries", 4.00, "Crispy golden fries.");
+
+  window.demoCartDiscount = () => {
+    myCartFood.applyDiscount(20);
+    const newSubtotal = myCartFood.calculateSubtotal(3);
+    document.getElementById('cartItemPrice').innerText = myCartFood.price.toFixed(2);
+    document.getElementById('cartSubtotal').innerText = newSubtotal.toFixed(2);
+    alert("CartItem subclass successfully calculated new subtotal after discount!");
+  };
+</script>
+
+</body>
+</html>
