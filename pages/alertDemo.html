@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Alert Demo</title>
+</head>
+<body>
+<h2>Alert Hierarchy Demo</h2>
+
+<label for="alertType">Select Alert Type:</label>
+<select id="alertType">
+    <option value="order">OrderAlert</option>
+    <option value="system">SystemAlert</option>
+    <option value="driver">DriverAlert</option>
+</select>
+
+<br><br>
+
+<input id="message" placeholder="Enter alert message">
+<button onclick="showAlert()">Show Alert</button>
+
+<div id="output" style="margin-top:20px; font-weight:bold;"></div>
+
+<script type="module">
+    import OrderAlert from "../core/models/alerts/OrderAlert.js";
+    import SystemAlert from "../core/models/alerts/SystemAlert.js";
+    import DriverAlert from "../core/models/alerts/DriverAlert.js";
+
+    window.showAlert = function() {
+        const type = document.getElementById("alertType").value;
+        const message = document.getElementById("message").value || "Default message";
+        let alert;
+
+        if(type === "order") alert = new OrderAlert(message);
+        if(type === "system") alert = new SystemAlert(message);
+        if(type === "driver") alert = new DriverAlert(message);
+
+        document.getElementById("output").innerText = alert.display();
+    }
+</script>
+</body>
+</html>

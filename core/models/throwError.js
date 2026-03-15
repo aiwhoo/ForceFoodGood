@@ -56,7 +56,7 @@ class Restaurant {
 
 class Cart {
     constructor() {
-        this.items = []; // [{ item: MenuItem, quantity: number }]
+        this.items = []; // [{ item: MenuItem, quantity: nuber }]
     }
 
     addItemToCart(menuItem, quantity = 1) {

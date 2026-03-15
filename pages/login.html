@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Login</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+    background:#f5f7fb;
+}
+
+.login-card{
+    border-radius:12px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.logo img{
+    max-width:160px;
+}
+
+.btn-main{
+    background:#305291;
+    color:white;
+}
+
+.btn-main:hover{
+    background:#264374;
+    color:white;
+}
+
+.google-btn{
+    border:1px solid #ddd;
+    color:#305291;
+}
+
+.google-btn:hover{
+    background:#f7f7f7;
+}
+
+.divider{
+    text-align:center;
+    position:relative;
+}
+
+.divider::before,
+.divider::after{
+    content:"";
+    position:absolute;
+    top:50%;
+    width:40%;
+    height:1px;
+    background:#ddd;
+}
+
+.divider::before{
+    left:0;
+}
+
+.divider::after{
+    right:0;
+}
+
+</style>
+</head>
+
+<body>
+<script type="module">
+    import TwoFactorAuth from "../core/models/auth/TwoFactorAuth.js"
+    import EmailAuth from "../core/models/auth/EmailAuth.js"
+    import OAuthProvider from "../core/models/auth/OAuthProvider.js"
+    function handle2FA(event) {
+        // Prevent form from submitting normally
+        event.preventDefault();
+
+        // Get form values
+        const email = document.querySelector('input[type="email"]').value;
+        const password = document.querySelector('input[type="password"]').value;
+        const authProvider = new TwoFactorAuth();
+        // Call login function
+        if (authProvider.fetchAccount({email, password})) {
+            // Redirect if login succeeds
+            window.location.href = "/pages/success.html";
+        } else {
+            alert("Invalid email or password!");
+        }
+    }
+    function handleOAuth(event) {
+        event.preventDefault();
+        const token = "favid"
+        const authProvider = new OAuthProvider()
+
+        if (authProvider.fetchAccount({token})){
+            window.location.href = "/pages/success.html";
+        }
+        else {
+            alert("Something went wrong.")
+        }
+    }
+    function handleEmailAuth(event) {
+        event.preventDefault();
+        const email = document.querySelector('input[type="email"]').value;
+        const authProvider = new EmailAuth();
+
+        if (authProvider.fetchAccount({email})) {
+            alert("sending u an email")
+            alert("email confirmed")
+            window.location.href = "/pages/success.html";
+        }
+        else {
+            alert("Email not found")
+        }
+    }
+    window.handle2FA = handle2FA;
+    window.handleOAuth = handleOAuth;
+    window.handleEmailAuth = handleEmailAuth;
+</script>
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+
+<div class="row w-100 justify-content-center">
+
+<div class="col-11 col-sm-8 col-md-6 col-lg-4">
+
+<div class="card login-card p-4 text-center">
+
+<div class="logo mb-3">
+<img src="resources/logo.png" class="img-fluid">
+</div>
+
+<h3 class="mb-4 text-primary">Login</h3>
+
+<form>
+
+<div class="mb-3 text-start">
+<label class="form-label">Email</label>
+<input type="email" class="form-control" placeholder="Enter your email">
+</div>
+
+<div class="mb-3 text-start">
+<label class="form-label">Password</label>
+<input type="password" class="form-control" placeholder="Enter your password">
+</div>
+
+<button class="btn btn-main w-100 mb-3" onclick="handle2FA(event)">Sign In</button>
+
+</form>
+
+<div class="divider my-3">or</div>
+
+<button class="btn google-btn w-100 d-flex align-items-center justify-content-center gap-2 mb-3" onclick="handleOAuth(event)">
+<img src="https://developers.google.com/identity/images/g-logo.png" width="18">
+Sign in with Google
+</button>
+
+<div class="small">
+<a href="#" class="text-decoration-none" onclick="handleEmailAuth(event)">Forgot password?</a>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
