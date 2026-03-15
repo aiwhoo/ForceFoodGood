@@ -20,19 +20,44 @@ body {
     color: var(--navy-blue) !important;
 }
 
+/* ForceFoodGood custom navy button */
 .btn-navy {
-    background-color: var(--navy-blue);
-    color: var(--pure-white);
-    border: none;
+    background-color: var(--navy-blue) !important;  /* force override Bootstrap */
+    color: var(--pure-white) !important;
+    border: none !important;
+    padding: 0.75rem 1rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    display: inline-block;
+    text-align: center;
+    width: 100%;  /* fill container */
+    cursor: pointer;
 }
 
+/* Hover effect */
 .btn-navy:hover {
-    background-color: #000066;
-    color: var(--pure-white);
+    background-color: #000066 !important;
+    color: var(--pure-white) !important;
 }
 
 /* Mascot sizing */
 .mascot-logo {
     font-size: 2.5rem;
     line-height: 1;
+}
+
+/* Logo in navbar */
+.logo{
+    height:40px;
+    width:auto;
+    object-fit:contain;
+}
+
+/* Main item image (restaurant/menu/driver) */
+.item-image{
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-right:15px;
 }

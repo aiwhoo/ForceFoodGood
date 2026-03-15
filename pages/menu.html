@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Menu Polymorphism Demo</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .container-box { max-width: 600px; margin: 40px auto; }
+    .card { background-color: var(--pure-white); }
+    h3, h5, label { color: var(--navy-blue); }
+  </style>
+</head>
+<body>
+<div class="container container-box card p-4 shadow">
+
+  <h3 class="text-center mb-4 text-navy mascot-logo">ForceFoodGood Menu Demo</h3>
+
+  <div class="mb-3">
+    <label class="form-label">Select Menu Type</label>
+    <select id="menuType" class="form-select">
+      <option value="restaurant">Restaurant Menu</option>
+      <option value="promo">Promotional Menu</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Item Name</label>
+    <input id="itemName" class="form-control">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Category</label>
+    <input id="itemCategory" class="form-control">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Description</label>
+    <input id="itemDescription" class="form-control">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Price</label>
+    <input id="itemPrice" type="number" class="form-control">
+  </div>
+
+  <div class="mb-3" id="discountContainer" style="display:none;">
+    <label class="form-label">Discount Rate (0–1)</label>
+    <input id="discountRate" type="number" step="0.01" class="form-control">
+  </div>
+
+  <div class="d-grid gap-2">
+    <button id="addItemBtn" class="btn btn-navy">Add Item / Apply Discount</button>
+    <button id="removeExpiredBtn" class="btn btn-navy">Remove Expired Items</button>
+    <button id="showMenuBtn" class="btn btn-navy">Show Menu</button>
+  </div>
+
+  <hr>
+  <h5 class="text-navy">Menu Output</h5>
+  <ul id="output" class="list-group"></ul>
+
+</div>
+
+<script type="module">
+  import RestaurantMenu from "../core/models/menus/restaurantMenuModel.js";
+  import PromotionalMenu from "../core/models/menus/promotionalMenuModel.js";
+  import MenuItemModel from "../core/models/menuItemModel.js";
+
+  const restaurantMenu = new RestaurantMenu("Demo Restaurant");
+  const promoMenu = new PromotionalMenu("Demo Restaurant", 0);
+  const menus = { restaurant: restaurantMenu, promo: promoMenu };
+
+  const menuSelector = document.getElementById("menuType");
+  const discountContainer = document.getElementById("discountContainer");
+
+  menuSelector.addEventListener("change", () => {
+    discountContainer.style.display = menuSelector.value === "promo" ? "block" : "none";
+  });
+
+  document.getElementById("addItemBtn").onclick = () => {
+    const name = document.getElementById("itemName").value.trim();
+    const category = document.getElementById("itemCategory").value.trim();
+    const description = document.getElementById("itemDescription").value.trim();
+    const price = Number(document.getElementById("itemPrice").value);
+    const discount = Number(document.getElementById("discountRate").value);
+    const menuType = menuSelector.value;
+
+    // Apply discount if promo menu & name empty
+    if(menuType === "promo" && !name && discount){
+      promoMenu.applyPromotion(discount);
+      alert("Discount applied to existing promo items!");
+      return;
+    }
+
+    if(!name || !price){
+      alert("Enter name and price to add a new item.");
+      return;
+    }
+
+    const item = new MenuItemModel(name, price, description, category);
+
+    restaurantMenu.addItem(item);
+    promoMenu.addItem(item);
+
+    alert("New item added!");
+  };
+
+  document.getElementById("removeExpiredBtn").onclick = () => {
+    restaurantMenu.items = restaurantMenu.items.filter(i => !i.isExpired());
+    promoMenu.removeExpiredItems();
+    alert("Expired items removed!");
+  };
+
+  document.getElementById("showMenuBtn").onclick = () => {
+    const selectedMenu = menus[menuSelector.value];
+    const items = selectedMenu.getAllItems();
+    const output = document.getElementById("output");
+    output.innerHTML = "";
+    items.forEach(item => {
+      const li = document.createElement("li");
+      li.className = "list-group-item";
+      li.innerText = item.expired
+              ? `${item.name} (EXPIRED)`
+              : item.discountedPrice !== undefined
+                      ? `${item.name} | $${item.originalPrice} → $${item.discountedPrice.toFixed(2)}`
+                      : `${item.name} | $${item.price}`;
+      output.appendChild(li);
+    });
+  };
+</script>
+</body>
+</html>

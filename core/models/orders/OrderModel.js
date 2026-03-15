@@ -6,25 +6,20 @@ class OrderModel {
     id: string
     */
     constructor(username = "NO USERNAME",
-                address = "NO ADDRESS",
                 restaurant,
                 id) {
         this.username = username;
-        this.address = address;
         this.restaurant = restaurant;
         this.totalCost = 0;
         this.itemsOrdered = [];
         this.totalItems = this.itemsOrdered.length;
         this.id = id
+        this.subtotal = 0;
+        this.taxTotal = 0;
+        this.lastModified = new Date().toISOString();
     }
 
-    // calculates the cost of the order after adding item to cart
-    updateCost() {
-        this.totalCost = 0;
-        for (let i = 0; i < this.itemsOrdered.length; i++) {
-            this.totalCost += this.itemsOrdered[i].price;
-        }
-    }
+
 
     // returns number of items in cart
     getTotalItems() {
@@ -34,11 +29,6 @@ class OrderModel {
     // returns username of customer
     getUserName() {
         return this.username;
-    }
-
-    // returns delivery address
-    getUserAddress() {
-        return this.address;
     }
 
      // returns restaurant being ordered from
@@ -61,15 +51,15 @@ class OrderModel {
         return this.itemsOrdered;
     }
 
-    // adds an item to the order
-    addMenuItem(aMenuItem) {
-        this.itemsOrdered.push(aMenuItem);
-        this.updateCost();
+    // generate summary of an order
+    summary() {
+        return `Order ${this.id} for ${this.username}`;
     }
-    // removes an item from the order
-    removeMenuItem(aMenuItem) {
-        this.itemsOrdered.splice(this.itemsOrdered.indexOf(aMenuItem), 1);
-        this.updateCost();
+    updateLastModified() {
+        this.lastModified = new Date().toISOString();
     }
 
+
+
 }
+export default OrderModel;
