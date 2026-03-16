@@ -131,7 +131,8 @@
         const pickup = new PickupLocationModel("Stadium Lot", "Philly", "PA", "19148", x, y);
 
         try {
-            const isValid = pickup.validate();
+            // FIX: Removed the unused 'const isValid = ' variable assignment
+            pickup.validate();
             document.getElementById('out-pickup').innerText =
                 `Coordinates Valid? ✅ Yes\n\nDirections:\n${pickup.getDirectionalString()}`;
         } catch (error) {
