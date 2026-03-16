@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForceFoodGood - Address Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-navy shadow">
+    <div class="container">
+        <span class="navbar-brand mb-0 h1 fw-bold">🍔 ForceFoodGood</span>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="row text-center mb-4">
+        <h2 class="text-navy fw-bold">Address Polymorphism Demo</h2>
+        <p class="text-muted">Test how the identical method names behave differently for each class.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100 border-0" style="border-top: 4px solid var(--navy-blue) !important;">
+                <div class="card-header bg-navy text-white fw-bold">
+                    👤 Customer Delivery
+                </div>
+                <div class="card-body">
+                    <p class="small text-muted">Overrides format() to add instructions. Overrides validate() to check for exact 5-digit ZIP.</p>
+
+                    <label for="customer-street" class="form-label small mb-0 mt-2">Street & Zip</label>
+                    <div class="input-group input-group-sm mb-2">
+                        <input type="text" id="customer-street" class="form-control" value="123 Main St">
+                        <input type="text" id="customer-zip" class="form-control" value="19701" aria-label="Zip Code" placeholder="Zip">
+                    </div>
+
+                    <label for="customer-instructions" class="form-label small mb-0">Delivery Instructions</label>
+                    <input type="text" id="customer-instructions" class="form-control form-control-sm mb-3" value="Leave at side door">
+
+                    <button id="btn-customer" class="btn-navy">Test Class Logic</button>
+
+                    <div class="mt-3 p-2 bg-dark text-success rounded small" id="out-customer" style="min-height: 80px; white-space: pre-wrap;">Awaiting output...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100 border-0" style="border-top: 4px solid var(--navy-blue) !important;">
+                <div class="card-header bg-navy text-white fw-bold">
+                    🏪 Restaurant Profile
+                </div>
+                <div class="card-body">
+                    <p class="small text-muted">Overrides format() to add emojis and radius math. Uses base Address validation.</p>
+
+                    <label for="restaurant-name" class="form-label small mb-0 mt-2">Restaurant Name</label>
+                    <input type="text" id="restaurant-name" class="form-control form-control-sm mb-2" value="Burger Spot">
+
+                    <label for="restaurant-radius" class="form-label small mb-0">Delivery Radius (Miles)</label>
+                    <input type="number" id="restaurant-radius" class="form-control form-control-sm mb-3" value="15">
+
+                    <button id="btn-restaurant" class="btn-navy">Test Class Logic</button>
+
+                    <div class="mt-3 p-2 bg-dark text-success rounded small" id="out-restaurant" style="min-height: 80px; white-space: pre-wrap;">Awaiting output...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100 border-0" style="border-top: 4px solid var(--navy-blue) !important;">
+                <div class="card-header bg-navy text-white fw-bold">
+                    📍 Temporary Pickup
+                </div>
+                <div class="card-body">
+                    <p class="small text-muted">Uses base format(). Overrides validate() to calculate Cartesian distance (Max 25m).</p>
+
+                    <label for="pickup-x" class="form-label small mb-0 mt-2">X & Y Coordinates</label>
+                    <div class="input-group input-group-sm mb-3">
+                        <span class="input-group-text">X</span>
+                        <input type="number" id="pickup-x" class="form-control" value="10">
+                        <span class="input-group-text">Y</span>
+                        <input type="number" id="pickup-y" class="form-control" value="15" aria-label="Y Coordinate">
+                    </div>
+
+                    <button id="btn-pickup" class="btn-navy">Test Class Logic</button>
+
+                    <div class="mt-3 p-2 bg-dark text-success rounded small" id="out-pickup" style="min-height: 80px; white-space: pre-wrap;">Awaiting output...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    // FIX: Changed paths to look in the exact same folder as this HTML file
+    import CustomerAddressModel from '../core/models/Address/CustomerAddressModel.js';
+    import RestaurantAddressModel from '../core/models/Address/RestaurantAddressModel.js';
+    import PickupLocationModel from '../core/models/Address/PickupLocationModel.js';
+
+    // -- CUSTOMER LOGIC --
+    document.getElementById('btn-customer').addEventListener('click', () => {
+        const street = document.getElementById('customer-street').value;
+        const zip = document.getElementById('customer-zip').value;
+        const instructions = document.getElementById('customer-instructions').value;
+
+        const customer = new CustomerAddressModel(street, "Bear", "DE", zip, instructions);
+        const isValid = customer.validate();
+
+        document.getElementById('out-customer').innerText =
+            `Valid? ${isValid ? '✅ Yes' : '❌ No (Check Zip)'}\n\nFormatted:\n${customer.format()}`;
+    });
+
+    // -- RESTAURANT LOGIC --
+    document.getElementById('btn-restaurant').addEventListener('click', () => {
+        const name = document.getElementById('restaurant-name').value;
+        const radius = parseInt(document.getElementById('restaurant-radius').value);
+
+        const restaurant = new RestaurantAddressModel(name, "99 Food Ct", "Newark", "DE", "19711", radius);
+        const isValid = restaurant.validate();
+
+        document.getElementById('out-restaurant').innerText =
+            `Valid base address? ${isValid ? '✅ Yes' : '❌ No'}\n\nFormatted:\n${restaurant.format()}`;
+    });
+
+    // -- PICKUP LOGIC --
+    document.getElementById('btn-pickup').addEventListener('click', () => {
+        const x = parseInt(document.getElementById('pickup-x').value);
+        const y = parseInt(document.getElementById('pickup-y').value);
+
+        const pickup = new PickupLocationModel("Stadium Lot", "Philly", "PA", "19148", x, y);
+
+        try {
+            // FIX: Removed the unused 'const isValid = ' variable assignment
+            pickup.validate();
+            document.getElementById('out-pickup').innerText =
+                `Coordinates Valid? ✅ Yes\n\nDirections:\n${pickup.getDirectionalString()}`;
+        } catch (error) {
+            document.getElementById('out-pickup').innerText = `❌ Error:\n${error.message}`;
+        }
+    });
+</script>
+
+</body>
+</html>
