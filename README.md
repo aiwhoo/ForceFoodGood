@@ -207,3 +207,35 @@ The frontend (`makeOrderPage.html`) interacts with `OrderLogicModel.js` to:
 3. Commit changes with clear, descriptive messages.
 4. Push your branch to your fork and open a Pull Request.
 5. Participate in TA code review.
+
+Here is the concise README text fully formatted with Markdown hashtags (`#`) for the headings.
+
+Just copy everything inside the block below and paste it straight into your `README.md` file:
+
+```markdown
+# 🧪 Testing & CI
+
+## Running Tests Locally
+We use **Mocha** and **Chai** for unit testing.
+```bash
+npm install
+npm test
+
+```
+
+## What the Tests Cover
+
+Our test suite verifies OOP principles (inheritance and polymorphism) across the Address domain:
+
+* **`AddressModel` (Base):** Validates base properties using the Parameter Object pattern.
+* **`CustomerAddressModel`:** Validates 5-digit ZIP regex and instruction formatting.
+* **`RestaurantAddressModel`:** Enforces delivery radius limits (max 70 miles) and rich text formatting.
+* **`PickupLocationModel`:** Validates Cartesian coordinates (X, Y) using the Pythagorean theorem (max 25-mile radius).
+
+## Continuous Integration
+
+Code quality is enforced via **GitHub Actions** (`.github/workflows/test.yml`). The CI pipeline automatically runs the full test suite on every push or Pull Request to the `main` branch. PRs cannot be merged if tests fail.
+
+## 📈 Recent Updates
+
+* **Parameter Object Pattern:** Refactored address constructors to accept a single `addressData` object instead of individual string arguments to prevent ordering errors.
