@@ -239,3 +239,13 @@ Code quality is enforced via **GitHub Actions** (`.github/workflows/test.yml`). 
 ## 📈 Recent Updates
 
 * **Parameter Object Pattern:** Refactored address constructors to accept a single `addressData` object instead of individual string arguments to prevent ordering errors.
+
+## Review links
+
+ZachMourtada: Not Addressed
+https://github.com/aiwhoo/ForceFoodGood/pull/214#discussion_r2939806295
+ZachMourtada: Not Addressed
+https://github.com/aiwhoo/ForceFoodGood/pull/214#discussion_r2939821511
+
+leeandy123: Addressed
+https://github.com/aiwhoo/ForceFoodGood/pull/214#pullrequestreview-3953195896
