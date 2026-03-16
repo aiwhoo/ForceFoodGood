@@ -47,3 +47,5 @@ function checkout(cart) {
   }
 }
 */
+
+export default CartModel;
