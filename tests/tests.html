@@ -5,10 +5,8 @@
     <meta charset="utf-8" />
     <title>Mocha Tests</title>
 
+    <!-- Mocha styles -->
     <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
-
-    <!-- Load the model -->
-    <script src="../core/models/menuItemModel.js"></script>
 
 </head>
 
@@ -16,13 +14,19 @@
 
 <div id="mocha"></div>
 
-<script src="https://unpkg.com/chai@4/chai.js"></script>
+<!-- Load Mocha and Chai -->
 <script src="https://unpkg.com/mocha/mocha.js"></script>
+<script src="https://unpkg.com/chai@4/chai.js"></script>
 
 <script>
-
     mocha.setup("bdd");
     const expect = chai.expect;
+</script>
+
+<!-- Load the model using ES modules -->
+<script type="module">
+
+    import MenuItemModel from "../core/models/menuItemModel.js";
 
     /* ---------------- MenuItemModel Tests ---------------- */
 
