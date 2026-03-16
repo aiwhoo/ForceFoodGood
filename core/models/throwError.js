@@ -1,4 +1,3 @@
-// ===== Issue #88: Basic error handling using throw =====
 
 function assert(condition, message) {
     if (!condition) throw new Error(message);
