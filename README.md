@@ -127,6 +127,7 @@ The test results will display on the page.
 - `MenuItemModel` (if implemented) – Represents a menu item with name, price, description, and category.
 - `UserModel` (if implemented) - Represents a user with ID, name, and email.
 - `menuModel` - Stores and manages menu items, and allows for addition/removal/retrieval
+- `reportModel` - Parent class of all the varying types of report models, which deliver reports and statistics about a set of orders, reports, or deliveries.
 
 ## Validation Rules
 To ensure data integrity and prevent invalid inputs, the following validation rules are enforced in the application.
