@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <title>Message Center</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .page-wrap {
+            max-width: 880px;
+            margin: 32px auto;
+            padding: 0 16px;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        label {
+            font-weight: 600;
+        }
+        input, select, textarea {
+            padding: 10px 12px;
+            border: 1px solid #cfd6e4;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        textarea {
+            min-height: 96px;
+            resize: vertical;
+        }
+        .actions {
+            display: flex;
+            gap: 12px;
+        }
+        .btn-primary {
+            background: var(--navy-blue);
+            color: var(--pure-white);
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid #cfd6e4;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .preview {
+            margin-top: 18px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            border: 1px dashed #cfd6e4;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+        .hidden {
+            display: none;
+        }
+        #mocha {
+            margin-top: 28px;
+        }
+        @media (max-width: 720px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="page-wrap">
+    <div class="card">
+        <h1>Message Center</h1>
+        <p>Choose the message type, recipient, and details. The preview updates as you type.</p>
+
+        <form id="messageForm">
+            <div class="row">
+                <div class="field">
+                    <label for="messageType">Message Type</label>
+                    <select id="messageType" required>
+                        <option value="order">Order</option>
+                        <option value="driver">Driver</option>
+                        <option value="system">System</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="recipient">Recipient</label>
+                    <input id="recipient" type="text" placeholder="Customer, Admin, etc." required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="field" id="driverNameField">
+                    <label for="driverName">Driver Name</label>
+                    <input id="driverName" type="text" placeholder="Luis">
+                </div>
+                <div class="field" id="orderIdField">
+                    <label for="orderId">Order ID</label>
+                    <input id="orderId" type="number" min="1" placeholder="101">
+                </div>
+                <div class="field hidden" id="severityField">
+                    <label for="severity">Severity</label>
+                    <select id="severity">
+                        <option value="INFO">INFO</option>
+                        <option value="WARNING">WARNING</option>
+                        <option value="CRITICAL">CRITICAL</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="content">Message</label>
+                <textarea id="content" placeholder="Write the message here..." required></textarea>
+            </div>
+
+            <div class="actions">
+                <button class="btn-primary" type="submit">Generate</button>
+                <button class="btn-ghost" type="button" id="clearBtn">Clear</button>
+            </div>
+        </form>
+
+        <div class="preview" id="preview">Preview will appear here.</div>
+    </div>
+
+    <div id="mocha"></div>
+</div>
+
+<script src="https://unpkg.com/mocha/mocha.js"></script>
+<script src="https://unpkg.com/chai@4/chai.js"></script>
+
+<script type="module">
+    import Message from "../core/models/messages/messageModel.js";
+    import OrderMessage from "../core/models/messages/OrdermessageModel.js";
+    import SystemMessage from "../core/models/messages/SystemmessageModel.js";
+    import DriverMessage from "../core/models/messages/DrivermessageModel.js";
+
+    const form = document.getElementById("messageForm");
+    const typeSelect = document.getElementById("messageType");
+    const recipientInput = document.getElementById("recipient");
+    const contentInput = document.getElementById("content");
+    const driverNameField = document.getElementById("driverNameField");
+    const driverNameInput = document.getElementById("driverName");
+    const orderIdField = document.getElementById("orderIdField");
+    const orderIdInput = document.getElementById("orderId");
+    const severityField = document.getElementById("severityField");
+    const severitySelect = document.getElementById("severity");
+    const preview = document.getElementById("preview");
+    const clearBtn = document.getElementById("clearBtn");
+
+    const toggleFields = () => {
+        const type = typeSelect.value;
+        driverNameField.classList.toggle("hidden", type !== "driver");
+        orderIdField.classList.toggle("hidden", type !== "order");
+        severityField.classList.toggle("hidden", type !== "system");
+    };
+
+    const buildMessage = () => {
+        const type = typeSelect.value;
+        const recipient = recipientInput.value.trim();
+        const content = contentInput.value.trim();
+
+        if (!recipient || !content) {
+            preview.textContent = "Preview will appear here.";
+            return;
+        }
+
+        if (type === "order") {
+            const orderId = Number(orderIdInput.value);
+            if (!orderId) {
+                preview.textContent = "Enter an Order ID to generate the message.";
+                return;
+            }
+            const msg = new OrderMessage(content, recipient, orderId);
+            preview.textContent = msg.formatMessage();
+            return;
+        }
+
+        if (type === "driver") {
+            const driverName = driverNameInput.value.trim();
+            if (!driverName) {
+                preview.textContent = "Enter a Driver Name to generate the message.";
+                return;
+            }
+            const msg = new DriverMessage(content, recipient, driverName);
+            preview.textContent = msg.formatMessage();
+            return;
+        }
+
+        const severity = severitySelect.value;
+        const msg = new SystemMessage(content, recipient, severity);
+        preview.textContent = msg.formatMessage();
+    };
+
+    typeSelect.addEventListener("change", () => {
+        toggleFields();
+        buildMessage();
+    });
+    [recipientInput, contentInput, driverNameInput, orderIdInput, severitySelect].forEach((input) => {
+        input.addEventListener("input", buildMessage);
+    });
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        buildMessage();
+    });
+
+    clearBtn.addEventListener("click", () => {
+        form.reset();
+        toggleFields();
+        preview.textContent = "Preview will appear here.";
+    });
+
+    toggleFields();
+    buildMessage();
+
+    mocha.setup("bdd");
+    const expect = chai.expect;
+
+    describe("Message Class", function() {
+        it("stores content and recipient", function() {
+            let msg = new Message("Hello", "User");
+            expect(msg.content).to.equal("Hello");
+            expect(msg.recipient).to.equal("User");
+        });
+    });
+
+    describe("OrderMessage Class", function() {
+        it("formats order message correctly", function() {
+            let msg = new OrderMessage("Food ready", "Customer", 101);
+            expect(msg.formatMessage()).to.equal("Order #101: Food ready");
+        });
+    });
+
+    describe("SystemMessage Class", function() {
+        it("formats system message correctly", function() {
+            let msg = new SystemMessage("Maintenance tonight", "Admin", "WARNING");
+            expect(msg.formatMessage()).to.equal("[SYSTEM WARNING] Maintenance tonight");
+        });
+    });
+
+    describe("DriverMessage Class", function() {
+        it("formats driver message correctly", function() {
+            let msg = new DriverMessage("Arriving soon", "Customer", "Luis");
+            expect(msg.formatMessage()).to.equal("Driver Luis: Arriving soon");
+        });
+    });
+
+    mocha.run();
+</script>
+
+</body>
+</html>
